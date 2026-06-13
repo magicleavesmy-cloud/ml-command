@@ -49,9 +49,21 @@ Chart.register(
 
 const AUTO_REFRESH_MS = 5 * 60 * 1000;
 const LOW_STOCK_LIMIT = 10;
-const PIN_CODE = "1234";
+const DEFAULT_PIN_CODE = "1234";
+const PIN_STORAGE_KEY = "magic-leaves-pin";
 const UNLOCK_STORAGE_KEY = "magic-leaves-unlocked";
+const THEME_STORAGE_KEY = "magic-leaves-theme";
+const DASHBOARD_PREFS_STORAGE_KEY = "magic-leaves-dashboard-prefs";
 const NAV_ITEMS = ["Dashboard", "Duitbiz", "DuitStock", "Supplier Debt", "Settings", "Help", "Logout", "Lock"];
+const APP_VERSION = "1.0.0";
+const defaultDashboardPreferences = {
+  totalSales: true,
+  estimatedProfit: true,
+  stockValue: true,
+  supplierDebt: true,
+  lowStockAlerts: true,
+  recentActivity: true,
+};
 
 const emptyDashboard = {
   closings: [],
@@ -286,14 +298,15 @@ function EmptyState({ children }) {
   return <div className={styles.empty}>{children}</div>;
 }
 
-function PinLockScreen({ onUnlock }) {
+function PinLockScreen({ onUnlock, theme }) {
   const [pin, setPin] = useState("");
   const [error, setError] = useState("");
   const [shaking, setShaking] = useState(false);
 
   const submitPin = useCallback(
     (nextPin) => {
-      if (nextPin === PIN_CODE) {
+      const savedPin = window.localStorage.getItem(PIN_STORAGE_KEY) || DEFAULT_PIN_CODE;
+      if (nextPin === savedPin) {
         window.localStorage.setItem(UNLOCK_STORAGE_KEY, "true");
         onUnlock();
         return;
@@ -325,7 +338,7 @@ function PinLockScreen({ onUnlock }) {
   };
 
   return (
-    <main className={styles.lockPage}>
+    <main className={`${styles.lockPage} ${theme === "dark" ? styles.darkTheme : ""}`}>
       <section className={`${styles.lockCard} ${shaking ? styles.lockShake : ""}`}>
         <div className={styles.lockBrand}>
           <span className={styles.logo}>🍃</span>
@@ -369,6 +382,10 @@ export default function Home() {
   const [unlocked, setUnlocked] = useState(false);
   const [activeView, setActiveView] = useState("Dashboard");
   const [detailView, setDetailView] = useState(null);
+  const [theme, setTheme] = useState("light");
+  const [dashboardPrefs, setDashboardPrefs] = useState(defaultDashboardPreferences);
+  const [pinForm, setPinForm] = useState({ current: "", next: "", confirm: "" });
+  const [settingsMessage, setSettingsMessage] = useState("");
   const [dashboard, setDashboard] = useState(emptyDashboard);
   const [range, setRange] = useState("week");
   const [loading, setLoading] = useState(true);
@@ -377,8 +394,19 @@ export default function Home() {
   const [errors, setErrors] = useState([]);
   const salesChartRef = useRef(null);
   const expenseChartRef = useRef(null);
+  const restoreInputRef = useRef(null);
 
   useEffect(() => {
+    const savedTheme = window.localStorage.getItem(THEME_STORAGE_KEY);
+    const savedPrefs = window.localStorage.getItem(DASHBOARD_PREFS_STORAGE_KEY);
+    if (savedTheme === "dark" || savedTheme === "light") setTheme(savedTheme);
+    if (savedPrefs) {
+      try {
+        setDashboardPrefs({ ...defaultDashboardPreferences, ...JSON.parse(savedPrefs) });
+      } catch (error) {
+        console.error("[Settings] Failed to parse dashboard preferences", error);
+      }
+    }
     setUnlocked(window.localStorage.getItem(UNLOCK_STORAGE_KEY) === "true");
     setMounted(true);
   }, []);
@@ -994,7 +1022,146 @@ export default function Home() {
     setErrors([]);
   };
 
-  if (!unlocked) return <PinLockScreen onUnlock={unlockApp} />;
+  const setThemePreference = (nextTheme) => {
+    setTheme(nextTheme);
+    window.localStorage.setItem(THEME_STORAGE_KEY, nextTheme);
+    setSettingsMessage(`Theme changed to ${nextTheme}.`);
+  };
+
+  const updateDashboardPreference = (key) => {
+    setDashboardPrefs((current) => {
+      const next = { ...current, [key]: !current[key] };
+      window.localStorage.setItem(DASHBOARD_PREFS_STORAGE_KEY, JSON.stringify(next));
+      return next;
+    });
+  };
+
+  const savePin = () => {
+    const savedPin = window.localStorage.getItem(PIN_STORAGE_KEY) || DEFAULT_PIN_CODE;
+    if (pinForm.current !== savedPin) {
+      setSettingsMessage("Current PIN is incorrect.");
+      return;
+    }
+    if (!/^\d{4}$/.test(pinForm.next)) {
+      setSettingsMessage("New PIN must be exactly 4 digits.");
+      return;
+    }
+    if (pinForm.next !== pinForm.confirm) {
+      setSettingsMessage("New PIN confirmation does not match.");
+      return;
+    }
+
+    window.localStorage.setItem(PIN_STORAGE_KEY, pinForm.next);
+    setPinForm({ current: "", next: "", confirm: "" });
+    setSettingsMessage("PIN updated.");
+  };
+
+  const downloadTextFile = (fileName, content, type) => {
+    const blob = new Blob([content], { type });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = fileName;
+    link.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const exportSnapshotJson = () => {
+    const snapshot = {
+      exportedAt: new Date().toISOString(),
+      app: "Magic Leaves Command Center",
+      summary: {
+        todaySales: businessHealth.todaySales,
+        estimatedProfit: duitbizEstimatedProfit,
+        stockValue: metrics.stockValue,
+        salesValue: metrics.salesValue,
+        supplierDebt: metrics.supplierDebt,
+        lowStockCount: lowStock.length,
+        productsTracked: dashboard.products.length,
+      },
+      counts: {
+        closings: dashboard.closings.length,
+        expenses: dashboard.expenses.length,
+        products: dashboard.products.length,
+        movements: dashboard.movements.length,
+        suppliers: dashboard.suppliers.length,
+        supplierTransactions: dashboard.supplierTransactions.length,
+      },
+    };
+    downloadTextFile("magic-leaves-dashboard-snapshot.json", JSON.stringify(snapshot, null, 2), "application/json");
+    setSettingsMessage("Dashboard snapshot exported.");
+  };
+
+  const exportSummaryCsv = () => {
+    const rows = [
+      ["Metric", "Value"],
+      ["Total Sales Today", businessHealth.todaySales],
+      ["Estimated Profit", duitbizEstimatedProfit],
+      ["Profit Percent", duitbizProfitPercent.toFixed(1)],
+      ["Stock Cost Value", metrics.stockValue],
+      ["Stock Selling Value", metrics.salesValue],
+      ["Supplier Debt", metrics.supplierDebt],
+      ["Low Stock Alerts", lowStock.length],
+      ["Recent Activity Count", liveActivityFeed.length],
+    ];
+    const csv = rows.map((row) => row.map((value) => `"${String(value).replaceAll('"', '""')}"`).join(",")).join("\n");
+    downloadTextFile("magic-leaves-summary.csv", csv, "text/csv");
+    setSettingsMessage("Current summary CSV exported.");
+  };
+
+  const backupLocalSettings = () => {
+    const backup = {
+      exportedAt: new Date().toISOString(),
+      pin: window.localStorage.getItem(PIN_STORAGE_KEY) || DEFAULT_PIN_CODE,
+      theme,
+      dashboardPrefs,
+      unlocked: window.localStorage.getItem(UNLOCK_STORAGE_KEY) === "true",
+    };
+    downloadTextFile("magic-leaves-local-settings.json", JSON.stringify(backup, null, 2), "application/json");
+    setSettingsMessage("Local settings backup exported.");
+  };
+
+  const restoreLocalSettings = (event) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      try {
+        const backup = JSON.parse(String(reader.result || "{}"));
+        const nextTheme = backup.theme === "dark" ? "dark" : "light";
+        const nextPrefs = { ...defaultDashboardPreferences, ...(backup.dashboardPrefs || {}) };
+        if (/^\d{4}$/.test(String(backup.pin || ""))) {
+          window.localStorage.setItem(PIN_STORAGE_KEY, String(backup.pin));
+        }
+        window.localStorage.setItem(THEME_STORAGE_KEY, nextTheme);
+        window.localStorage.setItem(DASHBOARD_PREFS_STORAGE_KEY, JSON.stringify(nextPrefs));
+        if (backup.unlocked) window.localStorage.setItem(UNLOCK_STORAGE_KEY, "true");
+        else window.localStorage.removeItem(UNLOCK_STORAGE_KEY);
+        setTheme(nextTheme);
+        setDashboardPrefs(nextPrefs);
+        setSettingsMessage("Local settings restored.");
+      } catch (error) {
+        console.error("[Settings] Restore failed", error);
+        setSettingsMessage("Restore failed. Choose a valid settings backup.");
+      }
+      event.target.value = "";
+    };
+    reader.readAsText(file);
+  };
+
+  const resetLocalSettings = () => {
+    window.localStorage.removeItem(PIN_STORAGE_KEY);
+    window.localStorage.removeItem(THEME_STORAGE_KEY);
+    window.localStorage.removeItem(DASHBOARD_PREFS_STORAGE_KEY);
+    window.localStorage.removeItem(UNLOCK_STORAGE_KEY);
+    setTheme("light");
+    setDashboardPrefs(defaultDashboardPreferences);
+    setPinForm({ current: "", next: "", confirm: "" });
+    setSettingsMessage("Local settings reset. Firebase data was not touched.");
+    setUnlocked(false);
+  };
+
+  if (!unlocked) return <PinLockScreen onUnlock={unlockApp} theme={theme} />;
 
   const pageSubtitle =
     activeView === "Dashboard"
@@ -1008,7 +1175,7 @@ export default function Home() {
             : `${activeView} module`;
 
   return (
-    <main className={styles.page}>
+    <main className={`${styles.page} ${theme === "dark" ? styles.darkTheme : ""}`}>
       <aside className={styles.sidebar}>
         <div className={styles.sidebarBrand}>
           <span className={styles.logo}>🍃</span>
@@ -1087,6 +1254,7 @@ export default function Home() {
         {activeView === "Dashboard" && (
           <section className={styles.commandCenter}>
             <section className={styles.healthGrid}>
+              {dashboardPrefs.totalSales && (
               <section className={`${styles.kpiCard} ${styles.kpiDark}`}>
                 <p>Total Sales Today</p>
                 {loading ? <Skeleton className={styles.statSkeleton} /> : <strong>{formatCurrency(businessHealth.todaySales)}</strong>}
@@ -1099,7 +1267,9 @@ export default function Home() {
                   {businessHealth.salesTrend >= 0 ? "Up" : "Down"} {formatPercent(Math.abs(businessHealth.salesTrend))} vs yesterday
                 </em>
               </section>
+              )}
 
+              {dashboardPrefs.estimatedProfit && (
               <section className={`${styles.kpiCard} ${styles[`profitStatus${businessHealth.profitStatus}`]}`}>
                 <p>Estimated Profit</p>
                 {loading ? <Skeleton className={styles.statSkeleton} /> : <strong>{formatCurrency(duitbizEstimatedProfit)}</strong>}
@@ -1109,7 +1279,9 @@ export default function Home() {
                 </div>
                 <em>Supplier margin logic</em>
               </section>
+              )}
 
+              {dashboardPrefs.stockValue && (
               <section className={styles.kpiCard}>
                 <p>Inventory Power</p>
                 {loading ? <Skeleton className={styles.statSkeleton} /> : <strong>{formatCurrency(metrics.stockValue)}</strong>}
@@ -1121,7 +1293,9 @@ export default function Home() {
                   View DuitStock
                 </button>
               </section>
+              )}
 
+              {dashboardPrefs.supplierDebt && (
               <section className={styles.kpiCard}>
                 <p>Liability Status</p>
                 {loading ? <Skeleton className={styles.statSkeleton} /> : <strong>{formatCurrency(metrics.supplierDebt)}</strong>}
@@ -1133,6 +1307,7 @@ export default function Home() {
                   View debt
                 </button>
               </section>
+              )}
             </section>
 
             <section className={styles.heartbeatGrid}>
@@ -1170,12 +1345,14 @@ export default function Home() {
                   </em>
                 </section>
 
+                {dashboardPrefs.lowStockAlerts && (
                 <section className={styles.intelligenceCard}>
                   <p>Stock Alerts</p>
                   <strong>{formatNumber(lowStock.length)} low stock</strong>
                   <span>{formatNumber(stockRisk.deadStockCount)} dead stock products</span>
                   <em>{stockRisk.highestRiskProduct?.name || "No risk product"} {stockRisk.highestRiskProduct ? `(${formatNumber(getProductQuantity(stockRisk.highestRiskProduct))} left)` : ""}</em>
                 </section>
+                )}
 
                 <section className={styles.intelligenceCard}>
                   <p>Banked Out</p>
@@ -1276,6 +1453,7 @@ export default function Home() {
               </section>
             </section>
 
+            {dashboardPrefs.recentActivity && (
             <section className={styles.panel}>
               <div className={styles.panelHeader}>
                 <div>
@@ -1301,6 +1479,7 @@ export default function Home() {
                 )}
               </div>
             </section>
+            )}
           </section>
         )}
 
@@ -1835,9 +2014,168 @@ export default function Home() {
 
         {activeView === "Settings" && (
           <section className={styles.settingsPanel}>
-            <p className={styles.eyebrow}>Settings</p>
-            <h2>Settings</h2>
-            <span>Settings page placeholder. Module preferences and dashboard options will live here later.</span>
+            <div className={styles.settingsHero}>
+              <div>
+                <p className={styles.eyebrow}>Settings</p>
+                <h2>Command Center Settings</h2>
+                <span>Local app preferences only. Firebase data is never changed from this page.</span>
+              </div>
+              {settingsMessage ? <strong>{settingsMessage}</strong> : null}
+            </div>
+
+            <div className={styles.settingsGrid}>
+              <section className={styles.settingsCard}>
+                <div className={styles.panelHeader}>
+                  <div>
+                    <p className={styles.eyebrow}>Security</p>
+                    <h2>Change PIN</h2>
+                  </div>
+                </div>
+                <div className={styles.formGrid}>
+                  <label>
+                    Current PIN
+                    <input
+                      inputMode="numeric"
+                      maxLength={4}
+                      onChange={(event) => setPinForm((current) => ({ ...current, current: event.target.value.replace(/\D/g, "") }))}
+                      type="password"
+                      value={pinForm.current}
+                    />
+                  </label>
+                  <label>
+                    New PIN
+                    <input
+                      inputMode="numeric"
+                      maxLength={4}
+                      onChange={(event) => setPinForm((current) => ({ ...current, next: event.target.value.replace(/\D/g, "") }))}
+                      type="password"
+                      value={pinForm.next}
+                    />
+                  </label>
+                  <label>
+                    Confirm New PIN
+                    <input
+                      inputMode="numeric"
+                      maxLength={4}
+                      onChange={(event) => setPinForm((current) => ({ ...current, confirm: event.target.value.replace(/\D/g, "") }))}
+                      type="password"
+                      value={pinForm.confirm}
+                    />
+                  </label>
+                  <button className={styles.refreshButton} onClick={savePin} type="button">
+                    Save PIN
+                  </button>
+                </div>
+              </section>
+
+              <section className={styles.settingsCard}>
+                <div className={styles.panelHeader}>
+                  <div>
+                    <p className={styles.eyebrow}>Theme</p>
+                    <h2>Appearance</h2>
+                  </div>
+                </div>
+                <div className={styles.themeToggle}>
+                  {["light", "dark"].map((option) => (
+                    <button
+                      className={theme === option ? styles.activeThemeButton : ""}
+                      key={option}
+                      onClick={() => setThemePreference(option)}
+                      type="button"
+                    >
+                      {option === "light" ? "Light theme" : "Dark theme"}
+                    </button>
+                  ))}
+                </div>
+              </section>
+
+              <section className={styles.settingsCard}>
+                <div className={styles.panelHeader}>
+                  <div>
+                    <p className={styles.eyebrow}>Dashboard</p>
+                    <h2>Preferences</h2>
+                  </div>
+                </div>
+                <div className={styles.toggleList}>
+                  {[
+                    ["totalSales", "Total Sales"],
+                    ["estimatedProfit", "Estimated Profit"],
+                    ["stockValue", "Stock Value"],
+                    ["supplierDebt", "Supplier Debt"],
+                    ["lowStockAlerts", "Low Stock Alerts"],
+                    ["recentActivity", "Recent Activity"],
+                  ].map(([key, label]) => (
+                    <label key={key}>
+                      <span>{label}</span>
+                      <input
+                        checked={dashboardPrefs[key]}
+                        onChange={() => updateDashboardPreference(key)}
+                        type="checkbox"
+                      />
+                    </label>
+                  ))}
+                </div>
+              </section>
+
+              <section className={styles.settingsCard}>
+                <div className={styles.panelHeader}>
+                  <div>
+                    <p className={styles.eyebrow}>Data Tools</p>
+                    <h2>Export & Backup</h2>
+                  </div>
+                </div>
+                <div className={styles.toolGrid}>
+                  <button className={styles.viewAllButton} onClick={exportSnapshotJson} type="button">
+                    Export snapshot JSON
+                  </button>
+                  <button className={styles.viewAllButton} onClick={exportSummaryCsv} type="button">
+                    Export summary CSV
+                  </button>
+                  <button className={styles.viewAllButton} onClick={backupLocalSettings} type="button">
+                    Backup local settings
+                  </button>
+                  <button className={styles.viewAllButton} onClick={() => restoreInputRef.current?.click()} type="button">
+                    Restore local settings
+                  </button>
+                  <input
+                    accept="application/json"
+                    className={styles.hiddenFileInput}
+                    onChange={restoreLocalSettings}
+                    ref={restoreInputRef}
+                    type="file"
+                  />
+                </div>
+              </section>
+
+              <section className={styles.settingsCard}>
+                <div className={styles.panelHeader}>
+                  <div>
+                    <p className={styles.eyebrow}>App Info</p>
+                    <h2>Magic Leaves</h2>
+                  </div>
+                </div>
+                <div className={styles.infoList}>
+                  <span>App name <b>Magic Leaves Command Center</b></span>
+                  <span>Version <b>{APP_VERSION}</b></span>
+                  <span>Last updated <b>{lastUpdated ? lastUpdated.toLocaleTimeString("en-MY") : "Not loaded"}</b></span>
+                  <span>Firebase status <b>{errors.length ? "Not connected" : "Connected"}</b></span>
+                  <span>Products tracked <b>{formatNumber(dashboard.products.length)}</b></span>
+                </div>
+              </section>
+
+              <section className={`${styles.settingsCard} ${styles.dangerCard}`}>
+                <div className={styles.panelHeader}>
+                  <div>
+                    <p className={styles.eyebrow}>Danger Zone</p>
+                    <h2>Reset Local Settings</h2>
+                  </div>
+                </div>
+                <p>Clears local PIN, theme, dashboard preferences, and unlock state only.</p>
+                <button className={styles.dangerButton} onClick={resetLocalSettings} type="button">
+                  Reset local app settings
+                </button>
+              </section>
+            </div>
           </section>
         )}
 

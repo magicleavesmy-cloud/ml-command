@@ -964,20 +964,268 @@
 }
 
 .settingsPanel {
-  min-height: 360px;
-  padding: 28px;
+  display: grid;
+  gap: 18px;
 }
 
-.settingsPanel h2 {
+.settingsHero {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.settingsHero h2 {
   margin: 0 0 10px;
   color: #111b14;
   font-size: clamp(2rem, 4vw, 3rem);
   line-height: 1;
 }
 
-.settingsPanel span {
+.settingsHero span {
   color: #6f7b71;
   font-size: 1.05rem;
+}
+
+.settingsHero strong {
+  border: 1px solid #dfe9df;
+  border-radius: 8px;
+  padding: 10px 12px;
+  background: #ffffff;
+  color: #1f6b31;
+  font-size: 0.9rem;
+}
+
+.settingsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.settingsCard {
+  min-width: 0;
+  border: 1px solid #dfe9df;
+  border-radius: 8px;
+  padding: 18px;
+  background: rgba(248, 252, 247, 0.96);
+  box-shadow: 0 18px 40px rgba(33, 51, 37, 0.08);
+}
+
+.settingsCard .panelHeader h2 {
+  margin: 0;
+  font-size: clamp(1.2rem, 1.7vw, 1.55rem);
+}
+
+.formGrid,
+.toggleList,
+.infoList,
+.toolGrid {
+  display: grid;
+  gap: 12px;
+}
+
+.formGrid label {
+  display: grid;
+  gap: 7px;
+  color: #6f7b71;
+  font-size: 0.9rem;
+  font-weight: 800;
+}
+
+.formGrid input {
+  min-height: 42px;
+  border: 1px solid #dfe9df;
+  border-radius: 8px;
+  padding: 9px 12px;
+  background: #ffffff;
+  color: #111b14;
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+.themeToggle {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  border: 1px solid #dfe9df;
+  border-radius: 8px;
+  padding: 6px;
+  background: #eef5ee;
+}
+
+.themeToggle button {
+  min-height: 42px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: #657167;
+  cursor: pointer;
+  font-weight: 850;
+}
+
+.themeToggle .activeThemeButton {
+  background: #4ec45f;
+  color: #102713;
+}
+
+.toggleList label,
+.infoList span {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  min-height: 44px;
+  border: 1px solid #e3ece3;
+  border-radius: 8px;
+  padding: 10px 12px;
+  background: #ffffff;
+  color: #111b14;
+  font-size: 0.95rem;
+  font-weight: 800;
+}
+
+.toggleList input {
+  width: 20px;
+  height: 20px;
+  accent-color: #4ec45f;
+}
+
+.infoList b {
+  color: #12351e;
+  text-align: right;
+}
+
+.toolGrid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.hiddenFileInput {
+  display: none;
+}
+
+.dangerCard {
+  border-color: #f1c8c4;
+  background: #fff7f6;
+}
+
+.dangerCard p {
+  margin: 0 0 16px;
+  color: #8c4a43;
+  font-weight: 760;
+}
+
+.dangerButton {
+  min-height: 42px;
+  border: 0;
+  border-radius: 8px;
+  padding: 9px 14px;
+  background: #b33a2f;
+  color: #ffffff;
+  cursor: pointer;
+  font-weight: 900;
+}
+
+.page.darkTheme,
+.lockPage.darkTheme {
+  background: #111812;
+  color: #edf7ed;
+}
+
+.darkTheme .sidebar,
+.darkTheme .lockCard,
+.darkTheme .panel,
+.darkTheme .settingsCard,
+.darkTheme .modalPanel,
+.darkTheme .kpiCard,
+.darkTheme .intelligenceCard,
+.darkTheme .settingsHero strong {
+  border-color: #243428;
+  background: #18231a;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.24);
+}
+
+.darkTheme .dashboardArea,
+.darkTheme .sidebarBrand strong,
+.darkTheme .topbar h1,
+.darkTheme .panelHeader h2,
+.darkTheme .settingsHero h2,
+.darkTheme .settingsCard .panelHeader h2,
+.darkTheme .kpiCard strong,
+.darkTheme .intelligenceCard strong,
+.darkTheme .tableRow strong,
+.darkTheme .listRow strong,
+.darkTheme .barRow span,
+.darkTheme .barRow b,
+.darkTheme .activityRow strong,
+.darkTheme .activityRow b,
+.darkTheme .metricList strong,
+.darkTheme .lockBrand strong {
+  color: #f3fff2;
+}
+
+.darkTheme .topbar p,
+.darkTheme .sidebarStatus p,
+.darkTheme .sidebarStatus span,
+.darkTheme .settingsHero span,
+.darkTheme .panelHeader span,
+.darkTheme .kpiBreakdown span,
+.darkTheme .kpiInline,
+.darkTheme .intelligenceCard span,
+.darkTheme .activityRow span,
+.darkTheme .activityRow em,
+.darkTheme .tableRow span,
+.darkTheme .listRow span,
+.darkTheme .lockBrand p,
+.darkTheme .pinError,
+.darkTheme .eyebrow {
+  color: #aebcaf;
+}
+
+.darkTheme .navItem {
+  color: #b8c8b8;
+}
+
+.darkTheme .navItem span,
+.darkTheme .sidebarStatus,
+.darkTheme .metricList > div,
+.darkTheme .listRow,
+.darkTheme .tableRow,
+.darkTheme .activityRow,
+.darkTheme .empty,
+.darkTheme .formGrid input,
+.darkTheme .toggleList label,
+.darkTheme .infoList span,
+.darkTheme .iconButton,
+.darkTheme .viewAllButton,
+.darkTheme .themeToggle {
+  border-color: #2b3a2e;
+  background: #111812;
+  color: #f3fff2;
+}
+
+.darkTheme .kpiDark,
+.darkTheme .intelligenceCard:nth-child(1),
+.darkTheme .activeNavItem {
+  background: #0c130e;
+}
+
+.darkTheme .profitStatusgreen {
+  background: #17321c;
+}
+
+.darkTheme .profitStatusorange {
+  background: #352914;
+}
+
+.darkTheme .profitStatusred,
+.darkTheme .dangerCard {
+  background: #341b19;
+}
+
+.darkTheme .kpiBreakdown b,
+.darkTheme .kpiInline b,
+.darkTheme .infoList b {
+  color: #f3fff2;
 }
 
 .modalBackdrop {
@@ -1094,7 +1342,8 @@
   }
 
   .healthGrid,
-  .insightGrid {
+  .insightGrid,
+  .settingsGrid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -1155,6 +1404,7 @@
 
   .topbar,
   .topbarActions,
+  .settingsHero,
   .panelHeader,
   .modalHeader {
     display: grid;
@@ -1171,6 +1421,8 @@
   .heartbeatGrid,
   .intelligenceStack,
   .insightGrid,
+  .settingsGrid,
+  .toolGrid,
   .actionGrid,
   .metricList {
     grid-template-columns: 1fr;
