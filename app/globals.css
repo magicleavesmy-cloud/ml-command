@@ -30,3 +30,7 @@ input,
 select {
   font: inherit;
 }
+
+body {
+  font-family: var(--font-ubuntu), "Ubuntu", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}

@@ -258,10 +258,16 @@
 
 .topbar {
   display: flex;
-  align-items: center;
+  flex-wrap: wrap;
+  align-items: flex-start;
   justify-content: space-between;
-  gap: 20px;
+  gap: 14px 20px;
   margin-bottom: 22px;
+}
+
+.topbar > div:first-child {
+  flex: 1 1 260px;
+  min-width: 0;
 }
 
 .topbar h1 {
@@ -280,8 +286,16 @@
 }
 
 .topbarActions {
+  flex: 1 1 100%;
+  flex-wrap: wrap;
   gap: 10px;
   justify-content: flex-end;
+}
+
+@media (min-width: 920px) {
+  .topbarActions {
+    flex: 0 1 auto;
+  }
 }
 
 .topbarActions > span {
@@ -373,7 +387,9 @@
 }
 
 .statCard:nth-child(1) {
+  border-color: #1b3322;
   background: #102115;
+  box-shadow: 0 22px 46px rgba(8, 20, 12, 0.32);
 }
 
 .statCard:nth-child(1) p,
@@ -520,7 +536,9 @@
 }
 
 .kpiDark {
+  border-color: #1b3322;
   background: #102115;
+  box-shadow: 0 22px 46px rgba(8, 20, 12, 0.32);
 }
 
 .kpiDark p,
@@ -532,14 +550,17 @@
 }
 
 .profitStatusgreen {
+  border-color: #b7e3a4;
   background: #e8f8df;
 }
 
 .profitStatusorange {
+  border-color: #f3cf8e;
   background: #fff4dd;
 }
 
 .profitStatusred {
+  border-color: #f3b3ac;
   background: #ffe9e7;
 }
 
@@ -599,7 +620,9 @@
 }
 
 .intelligenceCard:nth-child(1) {
+  border-color: #1b3322;
   background: #102115;
+  box-shadow: 0 22px 46px rgba(8, 20, 12, 0.32);
 }
 
 .intelligenceCard:nth-child(1) p,
@@ -748,7 +771,9 @@
 }
 
 .miniCard:nth-child(3n + 1) {
+  border-color: #1b3322;
   background: #102115;
+  box-shadow: 0 22px 46px rgba(8, 20, 12, 0.32);
 }
 
 .miniCard:nth-child(3n + 1) p,
@@ -1206,7 +1231,9 @@
 .darkTheme .kpiDark,
 .darkTheme .intelligenceCard:nth-child(1),
 .darkTheme .activeNavItem {
+  border-color: #2a4030;
   background: #0c130e;
+  box-shadow: 0 22px 46px rgba(0, 0, 0, 0.4);
 }
 
 .darkTheme .profitStatusgreen {
@@ -1447,5 +1474,388 @@
   .pinPad {
     grid-template-columns: repeat(3, minmax(64px, 1fr));
     width: 100%;
+  }
+}
+
+/* Source color-coding: Duitbiz=green, DuitStock=teal, Supplier Debt=rust */
+.sourceDuitbiz {
+  border-left: 4px solid #1f6b31;
+}
+
+.sourceDuitbiz .eyebrow {
+  color: #1f6b31;
+}
+
+.sourceDuitStock {
+  border-left: 4px solid #00a896;
+}
+
+.sourceDuitStock .eyebrow {
+  color: #00a896;
+}
+
+.sourceSupplierDebt {
+  border-left: 4px solid #b33a2f;
+}
+
+.sourceSupplierDebt .eyebrow {
+  color: #b33a2f;
+}
+
+.sourceDot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin-right: 8px;
+  border-radius: 999px;
+  vertical-align: middle;
+}
+
+.sourceDuitbiz .sourceDot {
+  background: #1f6b31;
+}
+
+.sourceDuitStock .sourceDot {
+  background: #00a896;
+}
+
+.sourceSupplierDebt .sourceDot {
+  background: #b33a2f;
+}
+
+.darkTheme .sourceDuitbiz .eyebrow {
+  color: #4ec45f;
+}
+
+.darkTheme .sourceDuitStock .eyebrow {
+  color: #2dd4c4;
+}
+
+.darkTheme .sourceSupplierDebt .eyebrow {
+  color: #e0786c;
+}
+
+/* Mobile-first navigation and responsive refinements */
+.datePickerInput {
+  min-width: 0;
+  min-height: 42px;
+  border: 1px solid #dfe9df;
+  border-radius: 8px;
+  padding: 8px 10px;
+  background: #f8fcf7;
+  color: #152618;
+  font: inherit;
+}
+
+.mobileTabBar,
+.moreSheetBackdrop {
+  display: none;
+}
+
+.darkTheme .datePickerInput,
+.darkTheme .mobileTabBar,
+.darkTheme .moreSheet {
+  border-color: #2b3a2e;
+  background: #111812;
+  color: #f3fff2;
+}
+
+@media (max-width: 780px) {
+  .sidebar {
+    display: none;
+  }
+
+  .dashboardArea {
+    padding: 16px 16px calc(82px + env(safe-area-inset-bottom));
+  }
+
+  .topbarActions {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-start;
+    width: 100%;
+  }
+
+  .topbar h1 {
+    font-size: clamp(1.55rem, 8vw, 2rem);
+  }
+
+  .topbarActions > span {
+    font-size: 0.78rem;
+  }
+
+  .datePickerInput {
+    flex: 1 1 145px;
+    width: min(100%, 172px);
+    min-height: 40px;
+    font-size: 0.86rem;
+  }
+
+  .iconButton {
+    width: 40px;
+    height: 40px;
+  }
+
+  .refreshButton {
+    min-height: 40px;
+    padding: 7px 11px;
+  }
+
+  .tableRow,
+  .barRow,
+  .activityRow {
+    min-height: 44px;
+  }
+
+  .tableRow > *,
+  .barRow > *,
+  .activityRow > * {
+    min-width: 0;
+  }
+
+  .tableRow span,
+  .tableRow strong,
+  .barRow span,
+  .activityRow strong {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .chartBox {
+    max-width: 100%;
+    overflow: hidden;
+  }
+
+  .kpiCard {
+    min-height: 172px;
+    padding: 17px;
+  }
+
+  .statCard {
+    min-height: 112px;
+    padding: 16px;
+  }
+
+  .kpiCard strong {
+    font-size: clamp(1.55rem, 8vw, 2.15rem);
+  }
+
+  .statCard strong {
+    font-size: clamp(1.4rem, 7vw, 1.9rem);
+  }
+
+  .kpiBreakdown span {
+    min-width: 0;
+  }
+
+  .kpiBreakdown b {
+    max-width: 62%;
+  }
+
+  .lockPage {
+    padding: 14px;
+  }
+
+  .lockCard {
+    padding: 22px 18px;
+  }
+
+  .pinPad button {
+    min-height: 58px;
+  }
+
+  .modalBackdrop {
+    align-items: end;
+    padding: 0;
+  }
+
+  .modalPanel {
+    width: 100%;
+    max-height: 94dvh;
+    border-radius: 8px 8px 0 0;
+    animation: sheetUp 0.22s ease-out;
+  }
+
+  .modalHeader {
+    display: flex;
+    align-items: center;
+    justify-items: initial;
+    padding: 14px 16px;
+  }
+
+  .modalHeader .viewAllButton {
+    min-width: 54px;
+    min-height: 44px;
+  }
+
+  .modalBody {
+    padding: 14px 14px calc(18px + env(safe-area-inset-bottom));
+  }
+
+  .mobileTabBar {
+    position: fixed;
+    z-index: 30;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    padding: 5px 4px calc(5px + env(safe-area-inset-bottom));
+    border-top: 1px solid #dfe9df;
+    background: #f8fcf7;
+    box-shadow: 0 -10px 30px rgba(33, 51, 37, 0.1);
+  }
+
+  .mobileTabBar button {
+    display: grid;
+    min-width: 0;
+    min-height: 54px;
+    place-items: center;
+    align-content: center;
+    gap: 4px;
+    border: 0;
+    background: transparent;
+    color: #657167;
+    cursor: pointer;
+  }
+
+  .mobileTabBar svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .mobileTabBar span {
+    overflow: hidden;
+    max-width: 100%;
+    font-size: 0.68rem;
+    font-weight: 800;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .mobileTabBar .activeMobileTab {
+    color: #1f6b31;
+  }
+
+  .darkTheme .mobileTabBar .activeMobileTab {
+    color: #4ec45f;
+  }
+
+  .moreSheetBackdrop {
+    position: fixed;
+    z-index: 35;
+    inset: 0;
+    display: block;
+    visibility: hidden;
+    background: rgba(17, 27, 20, 0.36);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease, visibility 0.2s ease;
+  }
+
+  .moreSheetBackdrop.moreSheetOpen {
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .moreSheet {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    padding: 16px 16px calc(18px + env(safe-area-inset-bottom));
+    border-top: 1px solid #dfe9df;
+    border-radius: 8px 8px 0 0;
+    background: #f8fcf7;
+    box-shadow: 0 -18px 50px rgba(33, 51, 37, 0.2);
+    transform: translateY(100%);
+    transition: transform 0.24s ease;
+  }
+
+  .moreSheetOpen .moreSheet {
+    transform: translateY(0);
+  }
+
+  .moreSheetHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    color: #111b14;
+    font-size: 1.1rem;
+  }
+
+  .darkTheme .moreSheetHeader {
+    color: #f3fff2;
+  }
+
+  .moreSheetHeader button {
+    width: 44px;
+    height: 44px;
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+    font-size: 1.7rem;
+  }
+
+  .moreSheetLinks {
+    display: grid;
+    gap: 6px;
+  }
+
+  .moreSheetLinks button {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    min-height: 52px;
+    border: 0;
+    border-radius: 8px;
+    padding: 10px 12px;
+    background: transparent;
+    color: #657167;
+    cursor: pointer;
+    font: inherit;
+    font-weight: 800;
+  }
+
+  .moreSheetLinks svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .moreSheetLinks .activeMoreItem {
+    background: #12351e;
+    color: #4ec45f;
+  }
+}
+
+@media (max-width: 399px) {
+  .lastUpdated {
+    display: none;
+  }
+
+  .dashboardArea {
+    padding-right: 12px;
+    padding-left: 12px;
+  }
+
+  .panel,
+  .settingsCard {
+    padding: 14px;
+  }
+
+  .segmented {
+    width: 100%;
+  }
+}
+
+@keyframes sheetUp {
+  from {
+    transform: translateY(24px);
+    opacity: 0;
   }
 }

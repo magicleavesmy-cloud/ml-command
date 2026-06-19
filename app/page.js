@@ -55,6 +55,30 @@ const UNLOCK_STORAGE_KEY = "magic-leaves-unlocked";
 const THEME_STORAGE_KEY = "magic-leaves-theme";
 const DASHBOARD_PREFS_STORAGE_KEY = "magic-leaves-dashboard-prefs";
 const NAV_ITEMS = ["Dashboard", "Duitbiz", "DuitStock", "Supplier Debt", "Settings", "Help", "Logout", "Lock"];
+const MOBILE_NAV_ITEMS = ["Dashboard", "Duitbiz", "DuitStock", "Supplier Debt"];
+const MORE_NAV_ITEMS = ["Settings", "Help", "Logout", "Lock"];
+
+const NAV_ICON_PATHS = {
+  Dashboard: "M3 13h8V3H3v10Zm0 8h8v-6H3v6Zm10 0h8V11h-8v10Zm0-18v6h8V3h-8Z",
+  Duitbiz: "M3 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v1H3V7Zm0 3h16v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-7Zm11 3.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Z",
+  DuitStock: "M12 2 3 6.5V17.5L12 22l9-4.5V6.5L12 2Zm0 2.2 6.2 3.1L12 10.6 5.8 7.5 12 4.2ZM5 9.3l6 3v7.6l-6-3V9.3Zm8 10.6v-7.6l6-3v7.6l-6 3Z",
+  "Supplier Debt": "M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm6.5-1a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM2 20.5C2 17 5.5 14.5 9 14.5s7 2.5 7 6v.5H2v-.5Zm13.5-4.3c2.6.5 4.5 2.4 4.5 4.3v.5h-3v-.5c0-1.5-.6-2.9-1.5-4.3Z",
+  Settings: "M12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6Zm8.4 3a7.5 7.5 0 0 0-.1-1.2l2-1.6-2-3.4-2.4 1a7.6 7.6 0 0 0-2-1.2L15.5 3h-4l-.4 2.6a7.6 7.6 0 0 0-2 1.2l-2.4-1-2 3.4 2 1.6A7.5 7.5 0 0 0 6.6 12c0 .4 0 .8.1 1.2l-2 1.6 2 3.4 2.4-1c.6.5 1.3.9 2 1.2L11.5 21h4l.4-2.6c.7-.3 1.4-.7 2-1.2l2.4 1 2-3.4-2-1.6c.1-.4.1-.8.1-1.2Z",
+  Help: "M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm.1 15.5h-.2a1.1 1.1 0 1 1 0-2.2h.2a1.1 1.1 0 1 1 0 2.2ZM13 13.4v.6h-2v-1.2c0-1 .6-1.5 1.3-2 .6-.4 1.1-.8 1.1-1.5 0-.8-.7-1.3-1.5-1.3-.7 0-1.3.4-1.5 1.1l-1.9-.8C8.9 6.7 10.2 6 11.9 6c2 0 3.5 1.2 3.5 3 0 1.4-.9 2.1-1.7 2.7-.4.3-.7.6-.7 1.7Z",
+  Logout: "M10 3a1 1 0 0 1 0 2H6v14h4a1 1 0 1 1 0 2H5a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5Zm6.3 4.3 4 4a1 1 0 0 1 0 1.4l-4 4a1 1 0 0 1-1.4-1.4L17.6 13H9a1 1 0 1 1 0-2h8.6l-2.7-2.3a1 1 0 0 1 1.4-1.4Z",
+  Lock: "M12 2a4 4 0 0 1 4 4v3h1a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1h1V6a4 4 0 0 1 4-4Zm0 2a2 2 0 0 0-2 2v3h4V6a2 2 0 0 0-2-2Zm0 9a1.5 1.5 0 0 0-.7 2.8v1.7a.7.7 0 1 0 1.4 0v-1.7A1.5 1.5 0 0 0 12 13Z",
+  More: "M5 10a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z",
+};
+
+function NavIcon({ item }) {
+  const path = NAV_ICON_PATHS[item];
+  if (!path) return <span>{item.slice(0, 1)}</span>;
+  return (
+    <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true">
+      <path d={path} />
+    </svg>
+  );
+}
 const APP_VERSION = "1.0.0";
 const defaultDashboardPreferences = {
   totalSales: true,
@@ -298,6 +322,21 @@ function EmptyState({ children }) {
   return <div className={styles.empty}>{children}</div>;
 }
 
+const SOURCE_CLASS = {
+  Duitbiz: "sourceDuitbiz",
+  DuitStock: "sourceDuitStock",
+  "Supplier Debt": "sourceSupplierDebt",
+};
+
+function SourceLabel({ source }) {
+  return (
+    <p className={`${styles.eyebrow} ${styles[SOURCE_CLASS[source]] || ""}`}>
+      <span className={styles.sourceDot} />
+      {source}
+    </p>
+  );
+}
+
 function PinLockScreen({ onUnlock, theme }) {
   const [pin, setPin] = useState("");
   const [error, setError] = useState("");
@@ -373,14 +412,16 @@ function PinLockScreen({ onUnlock, theme }) {
           </button>
         </div>
       </section>
+
     </main>
   );
 }
 
 export default function Home() {
   const [mounted, setMounted] = useState(false);
-  const [unlocked, setUnlocked] = useState(false);
+  const [unlocked, setUnlocked] = useState(true); // TEMP: login disabled
   const [activeView, setActiveView] = useState("Dashboard");
+  const [moreMenuOpen, setMoreMenuOpen] = useState(false);
   const [detailView, setDetailView] = useState(null);
   const [theme, setTheme] = useState("light");
   const [dashboardPrefs, setDashboardPrefs] = useState(defaultDashboardPreferences);
@@ -388,6 +429,7 @@ export default function Home() {
   const [settingsMessage, setSettingsMessage] = useState("");
   const [dashboard, setDashboard] = useState(emptyDashboard);
   const [range, setRange] = useState("week");
+  const [selectedDate, setSelectedDate] = useState(() => toDateKey(new Date()));
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [lastUpdated, setLastUpdated] = useState(null);
@@ -504,8 +546,22 @@ export default function Home() {
     return () => clearInterval(refresh);
   }, [loadDashboard, mounted, unlocked]);
 
+  const todayKey = selectedDate;
+  const yesterdayKey = (() => {
+    const date = new Date(`${selectedDate}T00:00:00`);
+    date.setDate(date.getDate() - 1);
+    return toDateKey(date);
+  })();
+  const isViewingToday = selectedDate === toDateKey(new Date());
+  const selectedDateLabel = (() => {
+    const parsed = new Date(`${selectedDate}T00:00:00`);
+    return Number.isNaN(parsed.getTime())
+      ? selectedDate
+      : parsed.toLocaleDateString("en-MY", { day: "2-digit", month: "short" });
+  })();
+
   const metrics = useMemo(() => {
-    const todayKey = toDateKey(new Date());
+    const todayKey = selectedDate;
     const todayClosing =
       dashboard.closings.find((closing) => closing.dateKey === todayKey) ||
       dashboard.closings.find((closing) => normalizeDate(closing.date)?.toLocaleDateString("en-CA") === todayKey);
@@ -546,7 +602,7 @@ export default function Home() {
       supplierDebt: supplierDebts.reduce((total, supplier) => total + supplier.amount, 0),
       supplierDebts,
     };
-  }, [dashboard]);
+  }, [dashboard, selectedDate]);
 
   const suppliersByIdForView = useMemo(
     () => new Map(dashboard.suppliers.map((supplier) => [supplier.id, supplier])),
@@ -753,13 +809,6 @@ export default function Home() {
       .slice(0, 8);
   }, [dashboard.expenses]);
 
-  const todayKey = toDateKey(new Date());
-  const yesterdayKey = (() => {
-    const date = new Date();
-    date.setDate(date.getDate() - 1);
-    return toDateKey(date);
-  })();
-
   const businessHealth = useMemo(() => {
     const todayClosing = dashboard.closings.find(
       (closing) => closing.dateKey === todayKey || toDateKey(normalizeDate(closing.date) || new Date(0)) === todayKey
@@ -956,7 +1005,7 @@ export default function Home() {
         scales: {
           x: {
             grid: { color: "rgba(31, 75, 38, 0.08)" },
-            ticks: { color: "#6f7b71" },
+            ticks: { autoSkip: true, color: "#6f7b71", maxRotation: 0, maxTicksLimit: 6 },
           },
           y: {
             grid: { color: "rgba(31, 75, 38, 0.08)" },
@@ -1020,6 +1069,13 @@ export default function Home() {
     setActiveView("Dashboard");
     setDetailView(null);
     setErrors([]);
+    setMoreMenuOpen(false);
+  };
+
+  const navigateTo = (item) => {
+    setMoreMenuOpen(false);
+    if (item === "Lock") lockApp();
+    else setActiveView(item);
   };
 
   const setThemePreference = (nextTheme) => {
@@ -1187,10 +1243,10 @@ export default function Home() {
             <button
               className={`${styles.navItem} ${activeView === item ? styles.activeNavItem : ""}`}
               key={item}
-              onClick={() => (item === "Lock" ? lockApp() : setActiveView(item))}
+              onClick={() => navigateTo(item)}
               type="button"
             >
-              <span>{item.slice(0, 1)}</span>
+              <NavIcon item={item} />
               {item}
             </button>
           ))}
@@ -1214,13 +1270,30 @@ export default function Home() {
           </div>
 
           <div className={styles.topbarActions}>
+            <input
+              aria-label="Select date"
+              className={styles.datePickerInput}
+              max={toDateKey(new Date())}
+              onChange={(event) => event.target.value && setSelectedDate(event.target.value)}
+              type="date"
+              value={selectedDate}
+            />
+            {!isViewingToday && (
+              <button
+                className={styles.viewAllButton}
+                onClick={() => setSelectedDate(toDateKey(new Date()))}
+                type="button"
+              >
+                Today
+              </button>
+            )}
             <button className={styles.iconButton} type="button" title="Search">
               ⌕
             </button>
             <button className={styles.iconButton} type="button" title="Notifications">
               ◦
             </button>
-            <span>
+            <span className={styles.lastUpdated}>
               Last updated{" "}
               {lastUpdated
                 ? lastUpdated.toLocaleTimeString("en-MY", {
@@ -1256,7 +1329,7 @@ export default function Home() {
             <section className={styles.healthGrid}>
               {dashboardPrefs.totalSales && (
               <section className={`${styles.kpiCard} ${styles.kpiDark}`}>
-                <p>Total Sales Today</p>
+                <p>{isViewingToday ? "Total Sales Today" : `Total Sales (${selectedDateLabel})`}</p>
                 {loading ? <Skeleton className={styles.statSkeleton} /> : <strong>{formatCurrency(businessHealth.todaySales)}</strong>}
                 <div className={styles.kpiBreakdown}>
                   <span>Day <b>{formatCurrency(businessHealth.todayDaySales)}</b></span>
@@ -1264,7 +1337,7 @@ export default function Home() {
                   <span>Online <b>{formatCurrency(businessHealth.todayOnlineSales)}</b></span>
                 </div>
                 <em className={businessHealth.salesTrend >= 0 ? styles.trendPositive : styles.trendNegative}>
-                  {businessHealth.salesTrend >= 0 ? "Up" : "Down"} {formatPercent(Math.abs(businessHealth.salesTrend))} vs yesterday
+                  {businessHealth.salesTrend >= 0 ? "Up" : "Down"} {formatPercent(Math.abs(businessHealth.salesTrend))} vs {isViewingToday ? "yesterday" : "previous day"}
                 </em>
               </section>
               )}
@@ -1521,10 +1594,10 @@ export default function Home() {
             </section>
 
             <section className={styles.dashboardGrid}>
-              <section className={`${styles.panel} ${styles.chartPanel}`}>
+              <section className={`${styles.panel} ${styles.chartPanel} ${styles.sourceDuitbiz}`}>
                 <div className={styles.panelHeader}>
                   <div>
-                    <p className={styles.eyebrow}>Duitbiz</p>
+                    <SourceLabel source="Duitbiz" />
                     <h2>Sales Trend</h2>
                   </div>
                   <div className={styles.segmented} aria-label="Sales date range">
@@ -1545,10 +1618,10 @@ export default function Home() {
                 </div>
               </section>
 
-              <section className={styles.panel}>
+              <section className={`${styles.panel} ${styles.sourceDuitbiz}`}>
                 <div className={styles.panelHeader}>
                   <div>
-                    <p className={styles.eyebrow}>Duitbiz</p>
+                    <SourceLabel source="Duitbiz" />
                     <h2>Profit Analysis</h2>
                   </div>
                 </div>
@@ -1578,10 +1651,10 @@ export default function Home() {
             </section>
 
             <section className={styles.dashboardGrid}>
-              <section className={styles.panel}>
+              <section className={`${styles.panel} ${styles.sourceDuitbiz}`}>
                 <div className={styles.panelHeader}>
                   <div>
-                    <p className={styles.eyebrow}>Duitbiz</p>
+                    <SourceLabel source="Duitbiz" />
                     <h2>Sales Breakdown</h2>
                   </div>
                 </div>
@@ -1601,10 +1674,10 @@ export default function Home() {
                 </div>
               </section>
 
-              <section className={styles.panel}>
+              <section className={`${styles.panel} ${styles.sourceDuitbiz}`}>
                 <div className={styles.panelHeader}>
                   <div>
-                    <p className={styles.eyebrow}>Duitbiz</p>
+                    <SourceLabel source="Duitbiz" />
                     <h2>Expenses Breakdown</h2>
                   </div>
                 </div>
@@ -1626,10 +1699,10 @@ export default function Home() {
             </section>
 
             <section className={styles.dashboardGrid}>
-              <section className={styles.panel}>
+              <section className={`${styles.panel} ${styles.sourceDuitbiz}`}>
                 <div className={styles.panelHeader}>
                   <div>
-                    <p className={styles.eyebrow}>Duitbiz</p>
+                    <SourceLabel source="Duitbiz" />
                     <h2>PC Balance History</h2>
                   </div>
                   <button className={styles.viewAllButton} onClick={() => setDetailView("pc")} type="button">
@@ -1655,10 +1728,10 @@ export default function Home() {
                 </div>
               </section>
 
-              <section className={styles.panel}>
+              <section className={`${styles.panel} ${styles.sourceDuitbiz}`}>
                 <div className={styles.panelHeader}>
                   <div>
-                    <p className={styles.eyebrow}>Duitbiz</p>
+                    <SourceLabel source="Duitbiz" />
                     <h2>Supplier Profit Top 8</h2>
                   </div>
                 </div>
@@ -1686,10 +1759,10 @@ export default function Home() {
             </section>
 
             <section className={styles.dashboardGrid}>
-              <section className={`${styles.panel} ${styles.listPanel}`}>
+              <section className={`${styles.panel} ${styles.listPanel} ${styles.sourceDuitbiz}`}>
                 <div className={styles.panelHeader}>
                   <div>
-                    <p className={styles.eyebrow}>Duitbiz</p>
+                    <SourceLabel source="Duitbiz" />
                     <h2>Big Expenses</h2>
                   </div>
                   <button className={styles.viewAllButton} onClick={() => setDetailView("bigExpenses")} type="button">
@@ -1713,10 +1786,10 @@ export default function Home() {
                 </div>
               </section>
 
-              <section className={`${styles.panel} ${styles.listPanel}`}>
+              <section className={`${styles.panel} ${styles.listPanel} ${styles.sourceDuitbiz}`}>
                 <div className={styles.panelHeader}>
                   <div>
-                    <p className={styles.eyebrow}>Duitbiz</p>
+                    <SourceLabel source="Duitbiz" />
                     <h2>Recent Closings</h2>
                   </div>
                   <button className={styles.viewAllButton} onClick={() => setDetailView("closings")} type="button">
@@ -1741,10 +1814,10 @@ export default function Home() {
               </section>
             </section>
 
-            <section className={`${styles.panel} ${styles.listPanel}`}>
+            <section className={`${styles.panel} ${styles.listPanel} ${styles.sourceDuitbiz}`}>
               <div className={styles.panelHeader}>
                 <div>
-                  <p className={styles.eyebrow}>Duitbiz</p>
+                  <SourceLabel source="Duitbiz" />
                   <h2>Recent Expenses</h2>
                 </div>
                 <button className={styles.viewAllButton} onClick={() => setDetailView("expenses")} type="button">
@@ -1801,10 +1874,10 @@ export default function Home() {
             </section>
 
             <section className={styles.dashboardGrid}>
-              <section className={`${styles.panel} ${styles.listPanel}`}>
+              <section className={`${styles.panel} ${styles.listPanel} ${styles.sourceDuitStock}`}>
                 <div className={styles.panelHeader}>
                   <div>
-                    <p className={styles.eyebrow}>DuitStock</p>
+                    <SourceLabel source="DuitStock" />
                     <h2>Product List</h2>
                   </div>
                   <span>{dashboard.products.length} products</span>
@@ -1826,10 +1899,10 @@ export default function Home() {
                 </div>
               </section>
 
-              <section className={`${styles.panel} ${styles.listPanel}`}>
+              <section className={`${styles.panel} ${styles.listPanel} ${styles.sourceDuitStock}`}>
                 <div className={styles.panelHeader}>
                   <div>
-                    <p className={styles.eyebrow}>DuitStock</p>
+                    <SourceLabel source="DuitStock" />
                     <h2>Low Stock</h2>
                   </div>
                   <span>{lowStock.length} alerts</span>
@@ -1856,10 +1929,10 @@ export default function Home() {
               </section>
             </section>
 
-            <section className={styles.panel}>
+            <section className={`${styles.panel} ${styles.sourceDuitStock}`}>
               <div className={styles.panelHeader}>
                 <div>
-                  <p className={styles.eyebrow}>DuitStock</p>
+                  <SourceLabel source="DuitStock" />
                   <h2>Stock Movements</h2>
                 </div>
                 <span>{dashboard.movements.length} records</span>
@@ -1881,10 +1954,10 @@ export default function Home() {
               </div>
             </section>
 
-            <section className={styles.panel}>
+            <section className={`${styles.panel} ${styles.sourceDuitStock}`}>
               <div className={styles.panelHeader}>
                 <div>
-                  <p className={styles.eyebrow}>DuitStock</p>
+                  <SourceLabel source="DuitStock" />
                   <h2>Top Selling Products</h2>
                 </div>
                 <span>By stock out</span>
@@ -1932,10 +2005,10 @@ export default function Home() {
             </section>
 
             <section className={styles.dashboardGrid}>
-              <section className={`${styles.panel} ${styles.listPanel}`}>
+              <section className={`${styles.panel} ${styles.listPanel} ${styles.sourceSupplierDebt}`}>
                 <div className={styles.panelHeader}>
                   <div>
-                    <p className={styles.eyebrow}>Supplier Debt</p>
+                    <SourceLabel source="Supplier Debt" />
                     <h2>You Owe</h2>
                   </div>
                   <span>{formatCurrency(metrics.supplierDebt)}</span>
@@ -1959,10 +2032,10 @@ export default function Home() {
                 </div>
               </section>
 
-              <section className={`${styles.panel} ${styles.listPanel}`}>
+              <section className={`${styles.panel} ${styles.listPanel} ${styles.sourceSupplierDebt}`}>
                 <div className={styles.panelHeader}>
                   <div>
-                    <p className={styles.eyebrow}>Supplier Debt</p>
+                    <SourceLabel source="Supplier Debt" />
                     <h2>Supplier List</h2>
                   </div>
                   <span>{dashboard.suppliers.length} suppliers</span>
@@ -1985,10 +2058,10 @@ export default function Home() {
               </section>
             </section>
 
-            <section className={styles.panel}>
+            <section className={`${styles.panel} ${styles.sourceSupplierDebt}`}>
               <div className={styles.panelHeader}>
                 <div>
-                  <p className={styles.eyebrow}>Supplier Debt</p>
+                  <SourceLabel source="Supplier Debt" />
                   <h2>Supplier Transactions</h2>
                 </div>
                 <span>{dashboard.supplierTransactions.length} records</span>
@@ -2200,7 +2273,7 @@ export default function Home() {
             <section className={styles.modalPanel} role="dialog" aria-modal="true" onClick={(event) => event.stopPropagation()}>
               <div className={styles.modalHeader}>
                 <div>
-                  <p className={styles.eyebrow}>Duitbiz</p>
+                  <SourceLabel source="Duitbiz" />
                   <h2>
                     {detailView === "closings" && "All Closings"}
                     {detailView === "expenses" && "All Expenses"}
@@ -2282,6 +2355,63 @@ export default function Home() {
           </div>
         )}
       </section>
+
+      <nav className={styles.mobileTabBar} aria-label="Primary navigation">
+        {MOBILE_NAV_ITEMS.map((item) => (
+          <button
+            aria-current={activeView === item ? "page" : undefined}
+            className={activeView === item ? styles.activeMobileTab : ""}
+            key={item}
+            onClick={() => navigateTo(item)}
+            type="button"
+          >
+            <NavIcon item={item} />
+            <span>{item === "Supplier Debt" ? "Debt" : item}</span>
+          </button>
+        ))}
+        <button
+          aria-expanded={moreMenuOpen}
+          aria-haspopup="dialog"
+          className={MORE_NAV_ITEMS.includes(activeView) || moreMenuOpen ? styles.activeMobileTab : ""}
+          onClick={() => setMoreMenuOpen((current) => !current)}
+          type="button"
+        >
+          <NavIcon item="More" />
+          <span>More</span>
+        </button>
+      </nav>
+
+      <div
+        aria-hidden={!moreMenuOpen}
+        className={`${styles.moreSheetBackdrop} ${moreMenuOpen ? styles.moreSheetOpen : ""}`}
+        onClick={() => setMoreMenuOpen(false)}
+      >
+        <section
+          aria-label="More navigation"
+          className={styles.moreSheet}
+          onClick={(event) => event.stopPropagation()}
+          role="dialog"
+        >
+          <div className={styles.moreSheetHeader}>
+            <strong>More</strong>
+            <button aria-label="Close more menu" onClick={() => setMoreMenuOpen(false)} type="button">×</button>
+          </div>
+          <div className={styles.moreSheetLinks}>
+            {MORE_NAV_ITEMS.map((item) => (
+              <button
+                aria-current={activeView === item ? "page" : undefined}
+                className={activeView === item ? styles.activeMoreItem : ""}
+                key={item}
+                onClick={() => navigateTo(item)}
+                type="button"
+              >
+                <NavIcon item={item} />
+                <span>{item}</span>
+              </button>
+            ))}
+          </div>
+        </section>
+      </div>
     </main>
   );
 }
