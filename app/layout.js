@@ -1,10 +1,15 @@
-import { Ubuntu } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 
-const ubuntu = Ubuntu({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "700"],
-  variable: "--font-ubuntu",
+const geist = localFont({
+  src: [
+    {
+      path: "./fonts/GeistVF.woff",
+      weight: "100 900",
+      style: "normal",
+    },
+  ],
+  variable: "--font-geist",
   display: "swap",
 });
 
@@ -15,7 +20,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={ubuntu.variable}>
+    <html lang="en" className={geist.variable}>
       <body>{children}</body>
     </html>
   );

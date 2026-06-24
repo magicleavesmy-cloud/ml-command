@@ -380,7 +380,7 @@ function PinLockScreen({ onUnlock, theme }) {
     <main className={`${styles.lockPage} ${theme === "dark" ? styles.darkTheme : ""}`}>
       <section className={`${styles.lockCard} ${shaking ? styles.lockShake : ""}`}>
         <div className={styles.lockBrand}>
-          <span className={styles.logo}>🍃</span>
+          <span className={styles.logo}>ML</span>
           <div>
             <strong>Magic Leaves</strong>
             <p>Command Center</p>
@@ -966,11 +966,11 @@ export default function Home() {
           {
             label: "Sales",
             data: salesRows.map((row) => row.sales),
-            borderColor: "#42bd55",
-            backgroundColor: "rgba(78, 196, 95, 0.16)",
+            borderColor: "#11100d",
+            backgroundColor: "rgba(17, 16, 13, 0.08)",
             borderWidth: 3,
-            pointBackgroundColor: "#f8fcf7",
-            pointBorderColor: "#42bd55",
+            pointBackgroundColor: "#fbf7ed",
+            pointBorderColor: "#11100d",
             pointRadius: 4,
             fill: true,
             tension: 0.35,
@@ -978,8 +978,8 @@ export default function Home() {
           {
             label: "Estimated profit",
             data: salesRows.map((row) => row.profit),
-            borderColor: "#111b14",
-            backgroundColor: "rgba(17, 27, 20, 0.08)",
+            borderColor: "#b4945d",
+            backgroundColor: "rgba(180, 148, 93, 0.08)",
             borderDash: [5, 5],
             borderWidth: 2,
             pointRadius: 3,
@@ -994,7 +994,7 @@ export default function Home() {
         plugins: {
           legend: {
             display: true,
-            labels: { color: "#4f5d52", boxWidth: 10, usePointStyle: true },
+            labels: { color: "#625b4f", boxWidth: 10, usePointStyle: true },
           },
           tooltip: {
             callbacks: {
@@ -1004,13 +1004,13 @@ export default function Home() {
         },
         scales: {
           x: {
-            grid: { color: "rgba(31, 75, 38, 0.08)" },
-            ticks: { autoSkip: true, color: "#6f7b71", maxRotation: 0, maxTicksLimit: 6 },
+            grid: { color: "rgba(17, 16, 13, 0.08)" },
+            ticks: { autoSkip: true, color: "#625b4f", maxRotation: 0, maxTicksLimit: 6 },
           },
           y: {
-            grid: { color: "rgba(31, 75, 38, 0.08)" },
+            grid: { color: "rgba(17, 16, 13, 0.08)" },
             ticks: {
-              color: "#6f7b71",
+              color: "#625b4f",
               callback: (value) => `RM ${formatNumber(value)}`,
             },
           },
@@ -1029,7 +1029,7 @@ export default function Home() {
           {
             label: "Expenses",
             data: expenseBreakdown.map((expense) => expense.amount),
-            backgroundColor: "#00d4b8",
+            backgroundColor: "#11100d",
             borderRadius: 6,
           },
         ],
@@ -1041,12 +1041,12 @@ export default function Home() {
         plugins: { legend: { display: false } },
         scales: {
           x: {
-            grid: { color: "rgba(255,255,255,0.06)" },
-            ticks: { color: "#9fb2c8" },
+            grid: { color: "rgba(17, 16, 13, 0.08)" },
+            ticks: { color: "#625b4f" },
           },
           y: {
             grid: { display: false },
-            ticks: { color: "#dbe8f7" },
+            ticks: { color: "#11100d" },
           },
         },
       },
@@ -1234,8 +1234,8 @@ export default function Home() {
     <main className={`${styles.page} ${theme === "dark" ? styles.darkTheme : ""}`}>
       <aside className={styles.sidebar}>
         <div className={styles.sidebarBrand}>
-          <span className={styles.logo}>🍃</span>
-          <strong>Magic Leaves</strong>
+          <span className={styles.logo}>ML</span>
+          <strong>ML-COMMAND</strong>
         </div>
 
         <nav className={styles.sidebarNav} aria-label="Dashboard modules">
@@ -1265,7 +1265,7 @@ export default function Home() {
       <section className={styles.dashboardArea}>
         <header className={styles.topbar}>
           <div>
-            <h1>Welcome, Adam 👋</h1>
+            <h1>Welcome, Adam</h1>
             <p>{pageSubtitle}</p>
           </div>
 
