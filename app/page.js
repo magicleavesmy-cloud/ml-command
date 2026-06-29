@@ -79,6 +79,16 @@ function NavIcon({ item }) {
     </svg>
   );
 }
+
+function DashboardCardIcon({ item, label, onClick }) {
+  return (
+    <button className={styles.cardActionIcon} aria-label={label} onClick={onClick} type="button">
+      <svg className={styles.cardActionSvg} viewBox="0 0 24 24" aria-hidden="true">
+        <path d={NAV_ICON_PATHS[item]} />
+      </svg>
+    </button>
+  );
+}
 const APP_VERSION = "1.0.0";
 const defaultDashboardPreferences = {
   totalSales: true,
@@ -553,12 +563,7 @@ export default function Home() {
     return toDateKey(date);
   })();
   const isViewingToday = selectedDate === toDateKey(new Date());
-  const selectedDateLabel = (() => {
-    const parsed = new Date(`${selectedDate}T00:00:00`);
-    return Number.isNaN(parsed.getTime())
-      ? selectedDate
-      : parsed.toLocaleDateString("en-MY", { day: "2-digit", month: "short" });
-  })();
+  const selectedMonthKey = selectedDate.slice(0, 7);
 
   const metrics = useMemo(() => {
     const todayKey = selectedDate;
@@ -615,6 +620,38 @@ export default function Home() {
   );
 
   const latestClosing = dashboard.closings[0] || {};
+
+  const selectedMonthClosings = useMemo(
+    () =>
+      dashboard.closings.filter((closing) => {
+        const dateKey =
+          closing.dateKey ||
+          toDateKey(normalizeDate(closing.date) || normalizeDate(closing.createdAt) || new Date(0));
+        return String(dateKey).startsWith(selectedMonthKey);
+      }),
+    [dashboard.closings, selectedMonthKey]
+  );
+
+  const monthlySalesBreakdown = useMemo(() => {
+    const totals = selectedMonthClosings.reduce(
+      (current, closing) => ({
+        day: current.day + (Number(closing.daySales) || 0),
+        night: current.night + (Number(closing.nightSales) || 0),
+        online: current.online + (Number(closing.onlineSales) || 0),
+      }),
+      { day: 0, night: 0, online: 0 }
+    );
+
+    return {
+      ...totals,
+      totalMonthSales: totals.day + totals.night + totals.online,
+    };
+  }, [selectedMonthClosings]);
+
+  const totalMonthSales = monthlySalesBreakdown.totalMonthSales;
+  const totalStockValue = metrics.salesValue > 0 ? metrics.salesValue : metrics.stockValue;
+  const totalDebt = metrics.supplierDebt;
+  const stockDebtDifference = totalStockValue - totalDebt;
 
   const duitbizBreakdown = useMemo(() => {
     const totals = {
@@ -966,11 +1003,11 @@ export default function Home() {
           {
             label: "Sales",
             data: salesRows.map((row) => row.sales),
-            borderColor: "#11100d",
-            backgroundColor: "rgba(17, 16, 13, 0.08)",
+            borderColor: "#ff8a1f",
+            backgroundColor: "rgba(255, 138, 31, 0.14)",
             borderWidth: 3,
-            pointBackgroundColor: "#fbf7ed",
-            pointBorderColor: "#11100d",
+            pointBackgroundColor: "#fff7ea",
+            pointBorderColor: "#ff8a1f",
             pointRadius: 4,
             fill: true,
             tension: 0.35,
@@ -978,8 +1015,8 @@ export default function Home() {
           {
             label: "Estimated profit",
             data: salesRows.map((row) => row.profit),
-            borderColor: "#b4945d",
-            backgroundColor: "rgba(180, 148, 93, 0.08)",
+            borderColor: "#c75a00",
+            backgroundColor: "rgba(255, 138, 31, 0.08)",
             borderDash: [5, 5],
             borderWidth: 2,
             pointRadius: 3,
@@ -994,7 +1031,7 @@ export default function Home() {
         plugins: {
           legend: {
             display: true,
-            labels: { color: "#625b4f", boxWidth: 10, usePointStyle: true },
+            labels: { color: "#7a5a35", boxWidth: 10, usePointStyle: true },
           },
           tooltip: {
             callbacks: {
@@ -1004,13 +1041,13 @@ export default function Home() {
         },
         scales: {
           x: {
-            grid: { color: "rgba(17, 16, 13, 0.08)" },
-            ticks: { autoSkip: true, color: "#625b4f", maxRotation: 0, maxTicksLimit: 6 },
+            grid: { color: "rgba(255, 138, 31, 0.14)" },
+            ticks: { autoSkip: true, color: "#7a5a35", maxRotation: 0, maxTicksLimit: 6 },
           },
           y: {
-            grid: { color: "rgba(17, 16, 13, 0.08)" },
+            grid: { color: "rgba(255, 138, 31, 0.14)" },
             ticks: {
-              color: "#625b4f",
+              color: "#7a5a35",
               callback: (value) => `RM ${formatNumber(value)}`,
             },
           },
@@ -1029,7 +1066,7 @@ export default function Home() {
           {
             label: "Expenses",
             data: expenseBreakdown.map((expense) => expense.amount),
-            backgroundColor: "#11100d",
+            backgroundColor: "#ff8a1f",
             borderRadius: 6,
           },
         ],
@@ -1041,12 +1078,12 @@ export default function Home() {
         plugins: { legend: { display: false } },
         scales: {
           x: {
-            grid: { color: "rgba(17, 16, 13, 0.08)" },
-            ticks: { color: "#625b4f" },
+            grid: { color: "rgba(255, 138, 31, 0.14)" },
+            ticks: { color: "#7a5a35" },
           },
           y: {
             grid: { display: false },
-            ticks: { color: "#11100d" },
+            ticks: { color: "#7a5a35" },
           },
         },
       },
@@ -1329,21 +1366,38 @@ export default function Home() {
             <section className={styles.healthGrid}>
               {dashboardPrefs.totalSales && (
               <section className={`${styles.kpiCard} ${styles.kpiDark}`}>
-                <p>{isViewingToday ? "Total Sales Today" : `Total Sales (${selectedDateLabel})`}</p>
-                {loading ? <Skeleton className={styles.statSkeleton} /> : <strong>{formatCurrency(businessHealth.todaySales)}</strong>}
+                <DashboardCardIcon item="Duitbiz" label="Open Duitbiz" onClick={() => setActiveView("Duitbiz")} />
+                <p>Total Sales This Month</p>
+                {loading ? <Skeleton className={styles.statSkeleton} /> : <strong>{formatCurrency(totalMonthSales)}</strong>}
                 <div className={styles.kpiBreakdown}>
-                  <span>Day <b>{formatCurrency(businessHealth.todayDaySales)}</b></span>
-                  <span>Night <b>{formatCurrency(businessHealth.todayNightSales)}</b></span>
-                  <span>Online <b>{formatCurrency(businessHealth.todayOnlineSales)}</b></span>
+                  <span>Day <b>{formatCurrency(monthlySalesBreakdown.day)}</b></span>
+                  <span>Night <b>{formatCurrency(monthlySalesBreakdown.night)}</b></span>
+                  <span>Online <b>{formatCurrency(monthlySalesBreakdown.online)}</b></span>
                 </div>
-                <em className={businessHealth.salesTrend >= 0 ? styles.trendPositive : styles.trendNegative}>
-                  {businessHealth.salesTrend >= 0 ? "Up" : "Down"} {formatPercent(Math.abs(businessHealth.salesTrend))} vs {isViewingToday ? "yesterday" : "previous day"}
-                </em>
+                <em>Month-to-date sales</em>
               </section>
               )}
 
+              <section className={`${styles.kpiCard} ${styles.kpiDark}`}>
+                <DashboardCardIcon item="Supplier Debt" label="Open Supplier Debt" onClick={() => setActiveView("Supplier Debt")} />
+                <p>Stock vs Debt</p>
+                {loading ? (
+                  <Skeleton className={styles.statSkeleton} />
+                ) : (
+                  <div className={styles.kpiBreakdown}>
+                    <span>Total Stock <b>{formatCurrency(totalStockValue)}</b></span>
+                    <span>Total Debt <b>{formatCurrency(totalDebt)}</b></span>
+                    <span>Difference <b>{formatCurrency(stockDebtDifference)}</b></span>
+                  </div>
+                )}
+                <em className={stockDebtDifference >= 0 ? styles.trendPositive : styles.trendNegative}>
+                  {stockDebtDifference >= 0 ? "Stock covers debt" : "Debt higher than stock"}
+                </em>
+              </section>
+
               {dashboardPrefs.estimatedProfit && (
               <section className={`${styles.kpiCard} ${styles[`profitStatus${businessHealth.profitStatus}`]}`}>
+                <DashboardCardIcon item="Duitbiz" label="Open Duitbiz" onClick={() => setActiveView("Duitbiz")} />
                 <p>Estimated Profit</p>
                 {loading ? <Skeleton className={styles.statSkeleton} /> : <strong>{formatCurrency(duitbizEstimatedProfit)}</strong>}
                 <div className={styles.kpiInline}>
@@ -1356,29 +1410,25 @@ export default function Home() {
 
               {dashboardPrefs.stockValue && (
               <section className={styles.kpiCard}>
+                <DashboardCardIcon item="DuitStock" label="Open DuitStock" onClick={() => setActiveView("DuitStock")} />
                 <p>Inventory Power</p>
                 {loading ? <Skeleton className={styles.statSkeleton} /> : <strong>{formatCurrency(metrics.stockValue)}</strong>}
                 <div className={styles.kpiBreakdown}>
                   <span>Selling value <b>{formatCurrency(metrics.salesValue)}</b></span>
                   <span>Profit potential <b>{formatCurrency(businessHealth.stockPotential)}</b></span>
                 </div>
-                <button className={styles.viewAllButton} onClick={() => setActiveView("DuitStock")} type="button">
-                  View DuitStock
-                </button>
               </section>
               )}
 
               {dashboardPrefs.supplierDebt && (
               <section className={styles.kpiCard}>
+                <DashboardCardIcon item="Supplier Debt" label="Open Supplier Debt" onClick={() => setActiveView("Supplier Debt")} />
                 <p>Liability Status</p>
                 {loading ? <Skeleton className={styles.statSkeleton} /> : <strong>{formatCurrency(metrics.supplierDebt)}</strong>}
                 <div className={styles.kpiBreakdown}>
                   <span>Highest owed <b>{businessHealth.highestSupplierOwed?.name || "n/a"}</b></span>
                   <span>Debt-to-stock <b>{formatPercent(businessHealth.debtToStockRatio * 100)}</b></span>
                 </div>
-                <button className={styles.viewAllButton} onClick={() => setActiveView("Supplier Debt")} type="button">
-                  View debt
-                </button>
               </section>
               )}
             </section>

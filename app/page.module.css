@@ -2058,3 +2058,1276 @@
     color: var(--muted);
   }
 }
+
+/* Glowing orange command theme */
+.lockPage,
+.page {
+  --black: #1a1208;
+  --charcoal: #261608;
+  --panel: rgba(42, 24, 8, 0.82);
+  --panel-soft: rgba(68, 34, 8, 0.72);
+  --line: rgba(255, 122, 0, 0.24);
+  --line-strong: rgba(255, 157, 46, 0.42);
+  --cream: #f8f0df;
+  --cream-soft: #fff7ed;
+  --cream-muted: #ffcf96;
+  --gold: #ff7a00;
+  --gold-soft: #ffb347;
+  --ink: #11100d;
+  --muted: #b98955;
+  --danger: #ff5c2e;
+  --success: #ffb347;
+  --shadow: 0 0 20px rgba(255, 122, 0, 0.35);
+}
+
+.page,
+.page.darkTheme,
+.lockPage,
+.lockPage.darkTheme {
+  background:
+    radial-gradient(circle at 10% 0%, rgba(255, 122, 0, 0.24), transparent 34%),
+    radial-gradient(circle at 88% 8%, rgba(255, 179, 71, 0.18), transparent 32%),
+    linear-gradient(135deg, #1a1208 0%, #2a1606 46%, #1a1208 100%);
+  color: var(--cream-soft);
+}
+
+.sidebar {
+  border-right-color: rgba(255, 122, 0, 0.28);
+  background:
+    radial-gradient(circle at 0% 0%, rgba(255, 122, 0, 0.2), transparent 32%),
+    linear-gradient(180deg, rgba(42, 24, 8, 0.96), rgba(26, 18, 8, 0.98));
+  box-shadow: 12px 0 36px rgba(255, 122, 0, 0.14);
+}
+
+.logo {
+  border-color: rgba(255, 179, 71, 0.62);
+  background: linear-gradient(145deg, #ffb347, #ff7a00);
+  color: var(--ink);
+  box-shadow: var(--shadow);
+}
+
+.sidebarBrand strong,
+.topbar h1,
+.panelHeader h2,
+.settingsHero h2,
+.metricList strong,
+.barRow span,
+.barRow b,
+.listRow strong,
+.tableRow strong,
+.tableRow b,
+.activityRow strong,
+.activityRow b,
+.miniCard strong {
+  color: var(--cream-soft);
+}
+
+.sidebarBrand strong::after,
+.topbar p,
+.topbarActions > span,
+.sidebarStatus p,
+.panelHeader span,
+.statCard span,
+.listRow span,
+.tableRow span,
+.activityRow em,
+.metricList span,
+.metricList em,
+.settingsHero span,
+.formGrid label,
+.empty {
+  color: rgba(255, 207, 150, 0.76);
+}
+
+.navItem {
+  color: rgba(255, 207, 150, 0.78);
+}
+
+.navItem span {
+  color: rgba(255, 207, 150, 0.78);
+}
+
+.navItem:hover {
+  border-color: rgba(255, 157, 46, 0.36);
+  background: rgba(255, 122, 0, 0.1);
+  color: var(--cream-soft);
+  box-shadow: 0 0 20px rgba(255, 122, 0, 0.18);
+}
+
+.activeNavItem,
+.mobileTabBar .activeMobileTab,
+.moreSheetLinks .activeMoreItem {
+  border-color: rgba(255, 179, 71, 0.7);
+  background: linear-gradient(145deg, #ffb347, #ff7a00);
+  color: var(--ink);
+  box-shadow: var(--shadow);
+}
+
+.activeNavItem span,
+.mobileTabBar .activeMobileTab span,
+.moreSheetLinks .activeMoreItem span {
+  color: var(--ink);
+}
+
+.sidebarStatus,
+.statCard,
+.panel,
+.miniCard,
+.settingsPanel,
+.kpiCard,
+.intelligenceCard,
+.settingsCard,
+.modalPanel,
+.metricList > div,
+.listRow,
+.tableRow,
+.barRow,
+.activityRow,
+.empty {
+  border-color: rgba(255, 122, 0, 0.24);
+  background:
+    radial-gradient(circle at 0% 0%, rgba(255, 122, 0, 0.14), transparent 36%),
+    linear-gradient(145deg, rgba(48, 27, 9, 0.86), rgba(26, 18, 8, 0.78));
+  box-shadow: var(--shadow);
+}
+
+.statCard:nth-child(even),
+.kpiCard:nth-child(3),
+.kpiCard:nth-child(4),
+.profitStatusgreen,
+.profitStatusorange,
+.profitStatusred {
+  border-color: rgba(255, 122, 0, 0.34);
+  background:
+    radial-gradient(circle at 0% 0%, rgba(255, 122, 0, 0.12), transparent 34%),
+    linear-gradient(145deg, rgba(255, 253, 247, 0.96), rgba(255, 239, 211, 0.9));
+  box-shadow: var(--shadow);
+  color: var(--ink);
+}
+
+.statCard:nth-child(even) p,
+.statCard:nth-child(even) strong,
+.statCard:nth-child(even) span,
+.statCard:nth-child(even) b,
+.kpiCard:nth-child(3) p,
+.kpiCard:nth-child(3) strong,
+.kpiCard:nth-child(3) span,
+.kpiCard:nth-child(3) b,
+.kpiCard:nth-child(3) em,
+.kpiCard:nth-child(4) p,
+.kpiCard:nth-child(4) strong,
+.kpiCard:nth-child(4) span,
+.kpiCard:nth-child(4) b,
+.kpiCard:nth-child(4) em,
+.profitStatusgreen p,
+.profitStatusgreen strong,
+.profitStatusgreen span,
+.profitStatusgreen b,
+.profitStatusgreen em,
+.profitStatusorange p,
+.profitStatusorange strong,
+.profitStatusorange span,
+.profitStatusorange b,
+.profitStatusorange em,
+.profitStatusred p,
+.profitStatusred strong,
+.profitStatusred span,
+.profitStatusred b,
+.profitStatusred em {
+  color: var(--ink);
+}
+
+.kpiDark,
+.intelligenceCard:nth-child(1) {
+  border-color: rgba(255, 157, 46, 0.48);
+  background:
+    radial-gradient(circle at 0% 0%, rgba(255, 122, 0, 0.24), transparent 38%),
+    linear-gradient(145deg, rgba(54, 29, 8, 0.95), rgba(26, 18, 8, 0.94));
+  box-shadow: var(--shadow);
+}
+
+.eyebrow,
+.statCard p,
+.miniCard p,
+.kpiCard p,
+.intelligenceCard p,
+.sourceDuitbiz .eyebrow,
+.sourceDuitStock .eyebrow,
+.sourceSupplierDebt .eyebrow,
+.overdue,
+.statSubValue,
+.settingsHero strong,
+.infoList b {
+  color: var(--gold-soft);
+}
+
+.statBreakdown span,
+.kpiBreakdown span,
+.kpiInline,
+.intelligenceCard span {
+  color: rgba(255, 207, 150, 0.78);
+}
+
+.statBreakdown b,
+.kpiBreakdown b,
+.kpiInline b {
+  color: var(--cream-soft);
+}
+
+.statCard:nth-child(even) .statBreakdown span,
+.statCard:nth-child(even) .statBreakdown b,
+.kpiCard:nth-child(3) .kpiBreakdown span,
+.kpiCard:nth-child(3) .kpiBreakdown b,
+.kpiCard:nth-child(4) .kpiBreakdown span,
+.kpiCard:nth-child(4) .kpiBreakdown b,
+.profitStatusgreen .kpiInline,
+.profitStatusgreen .kpiInline b,
+.profitStatusorange .kpiInline,
+.profitStatusorange .kpiInline b,
+.profitStatusred .kpiInline,
+.profitStatusred .kpiInline b {
+  color: var(--ink);
+}
+
+.refreshButton,
+.viewAllButton,
+.lockButton,
+.dangerButton,
+.actionGrid button {
+  border: 1px solid rgba(255, 179, 71, 0.62);
+  background: linear-gradient(145deg, #ffb347, #ff7a00);
+  color: var(--ink);
+  box-shadow: var(--shadow);
+}
+
+.refreshButton:hover,
+.viewAllButton:hover,
+.lockButton:hover,
+.dangerButton:hover,
+.actionGrid button:hover {
+  border-color: rgba(255, 211, 157, 0.9);
+  background: linear-gradient(145deg, #ffc66d, #ff8a1f);
+  box-shadow: 0 0 28px rgba(255, 122, 0, 0.52);
+}
+
+.refreshButton:active,
+.viewAllButton:active,
+.lockButton:active,
+.dangerButton:active,
+.actionGrid button:active {
+  box-shadow: 0 0 34px rgba(255, 122, 0, 0.72);
+  transform: translateY(1px);
+}
+
+.datePickerInput,
+.iconButton,
+.segmented,
+.themeToggle,
+.formGrid input {
+  border-color: rgba(255, 157, 46, 0.42);
+  background: rgba(42, 24, 8, 0.72);
+  color: var(--cream-soft);
+  color-scheme: dark;
+  box-shadow: inset 0 0 16px rgba(255, 122, 0, 0.08);
+}
+
+.datePickerInput:focus,
+.formGrid input:focus {
+  border-color: var(--gold-soft);
+  outline: 0;
+  box-shadow: 0 0 20px rgba(255, 122, 0, 0.35);
+}
+
+.iconButton:hover {
+  border-color: rgba(255, 179, 71, 0.68);
+  background: rgba(255, 122, 0, 0.2);
+  color: var(--cream-soft);
+  box-shadow: var(--shadow);
+}
+
+.segmented button,
+.themeToggle button {
+  color: rgba(255, 207, 150, 0.76);
+}
+
+.segmented .activeSegment,
+.themeToggle .activeThemeButton {
+  background: linear-gradient(145deg, #ffb347, #ff7a00);
+  color: var(--ink);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.2), var(--shadow);
+}
+
+.highlightRow,
+.settingsHero strong,
+.toggleList label,
+.infoList span {
+  border-color: rgba(255, 157, 46, 0.34);
+  background: rgba(255, 122, 0, 0.12);
+}
+
+.barRow div {
+  background: rgba(255, 179, 71, 0.18);
+}
+
+.barRow i {
+  background: linear-gradient(90deg, #ff7a00, #ffb347);
+  box-shadow: 0 0 20px rgba(255, 122, 0, 0.35);
+}
+
+.badge {
+  background: rgba(255, 122, 0, 0.18);
+  color: var(--gold-soft);
+}
+
+.dangerBadge {
+  background: rgba(255, 92, 46, 0.18);
+  color: #ffb08f;
+}
+
+.activityFeed {
+  border-color: rgba(255, 122, 0, 0.24);
+  background: rgba(42, 24, 8, 0.34);
+}
+
+.activityRow span {
+  color: var(--gold-soft);
+}
+
+.activityRow span::before,
+.sourceDot {
+  background: var(--gold);
+  box-shadow: 0 0 14px rgba(255, 122, 0, 0.55);
+}
+
+.sourceDuitbiz,
+.sourceDuitStock,
+.sourceSupplierDebt {
+  border-left-color: var(--gold);
+}
+
+.toggleList input {
+  accent-color: var(--gold);
+}
+
+.dangerCard {
+  border-color: rgba(255, 92, 46, 0.34);
+  background:
+    radial-gradient(circle at 0% 0%, rgba(255, 92, 46, 0.18), transparent 36%),
+    linear-gradient(145deg, rgba(56, 25, 12, 0.88), rgba(26, 18, 8, 0.92));
+}
+
+.dangerCard p {
+  color: #ffb08f;
+}
+
+.modalBackdrop,
+.moreSheetBackdrop {
+  background: rgba(26, 18, 8, 0.72);
+}
+
+.modalHeader {
+  border-bottom-color: rgba(255, 122, 0, 0.24);
+}
+
+.skeleton {
+  background: rgba(255, 122, 0, 0.14);
+}
+
+.skeleton::after {
+  background: linear-gradient(90deg, transparent, rgba(255, 179, 71, 0.42), transparent);
+}
+
+.lockCard {
+  border-color: rgba(255, 122, 0, 0.34);
+  background:
+    radial-gradient(circle at 0% 0%, rgba(255, 122, 0, 0.16), transparent 36%),
+    linear-gradient(145deg, rgba(255, 253, 247, 0.96), rgba(255, 239, 211, 0.92));
+  box-shadow: var(--shadow);
+}
+
+.pinDots span {
+  border-color: rgba(255, 122, 0, 0.28);
+}
+
+.pinDots .pinDotFilled {
+  border-color: var(--gold);
+  background: var(--gold);
+  box-shadow: 0 0 14px rgba(255, 122, 0, 0.55);
+}
+
+.pinPad button {
+  border-color: rgba(255, 122, 0, 0.24);
+  background: rgba(255, 122, 0, 0.12);
+  box-shadow: 0 0 20px rgba(255, 122, 0, 0.18);
+}
+
+@media (max-width: 780px) {
+  .mobileTabBar {
+    border-top-color: rgba(255, 122, 0, 0.28);
+    background: rgba(26, 18, 8, 0.96);
+    box-shadow: 0 -18px 50px rgba(255, 122, 0, 0.22);
+  }
+
+  .mobileTabBar button {
+    color: rgba(255, 207, 150, 0.76);
+  }
+
+  .moreSheet {
+    border-top-color: rgba(255, 122, 0, 0.28);
+    background:
+      radial-gradient(circle at 0% 0%, rgba(255, 122, 0, 0.16), transparent 36%),
+      linear-gradient(180deg, rgba(42, 24, 8, 0.98), rgba(26, 18, 8, 0.98));
+    box-shadow: 0 -18px 50px rgba(255, 122, 0, 0.26);
+  }
+
+  .moreSheetHeader {
+    color: var(--cream-soft);
+  }
+
+  .moreSheetLinks button {
+    color: rgba(255, 207, 150, 0.76);
+  }
+}
+
+/* Clean premium cream + orange correction */
+.lockPage,
+.page {
+  --black: #17120a;
+  --charcoal: #fff7ea;
+  --panel: rgba(255, 250, 240, 0.92);
+  --panel-soft: rgba(255, 247, 234, 0.96);
+  --line: rgba(255, 138, 31, 0.28);
+  --line-strong: rgba(255, 138, 31, 0.42);
+  --cream: #fff7ea;
+  --cream-soft: #fffaf0;
+  --cream-muted: #7a5a35;
+  --gold: #ff8a1f;
+  --gold-soft: #c75a00;
+  --ink: #17120a;
+  --muted: #7a5a35;
+  --danger: #c75a00;
+  --success: #c75a00;
+  --shadow: 0 0 20px rgba(255, 138, 31, 0.18);
+}
+
+.page,
+.page.darkTheme,
+.lockPage,
+.lockPage.darkTheme {
+  background:
+    radial-gradient(circle at 12% 0%, rgba(255, 138, 31, 0.12), transparent 32%),
+    radial-gradient(circle at 88% 8%, rgba(255, 179, 71, 0.12), transparent 28%),
+    linear-gradient(135deg, #fff7ea 0%, #fffaf0 48%, #ffefd8 100%);
+  color: var(--ink);
+}
+
+.sidebar {
+  border-right-color: var(--line);
+  background: rgba(255, 250, 240, 0.88);
+  box-shadow: 12px 0 36px rgba(199, 90, 0, 0.08);
+  backdrop-filter: blur(18px);
+}
+
+.sidebarStatus,
+.statCard,
+.panel,
+.miniCard,
+.settingsPanel,
+.kpiCard,
+.kpiDark,
+.intelligenceCard,
+.settingsCard,
+.modalPanel,
+.metricList > div,
+.listRow,
+.tableRow,
+.barRow,
+.activityRow,
+.empty,
+.lockCard {
+  border-color: var(--line);
+  background:
+    radial-gradient(circle at 0% 0%, rgba(255, 138, 31, 0.08), transparent 30%),
+    var(--panel);
+  box-shadow: var(--shadow);
+  color: var(--ink);
+}
+
+.statCard:nth-child(even),
+.kpiCard:nth-child(3),
+.kpiCard:nth-child(4),
+.profitStatusgreen,
+.profitStatusorange,
+.profitStatusred,
+.intelligenceCard:nth-child(1) {
+  border-color: var(--line);
+  background:
+    radial-gradient(circle at 0% 0%, rgba(255, 138, 31, 0.09), transparent 30%),
+    var(--panel);
+  box-shadow: var(--shadow);
+  color: var(--ink);
+}
+
+.sidebarBrand strong,
+.topbar h1,
+.panelHeader h2,
+.settingsHero h2,
+.settingsCard .panelHeader h2,
+.metricList strong,
+.barRow span,
+.barRow b,
+.listRow strong,
+.tableRow strong,
+.tableRow b,
+.activityRow strong,
+.activityRow b,
+.miniCard strong,
+.sidebarStatus strong,
+.statCard strong,
+.kpiCard strong,
+.kpiDark strong,
+.intelligenceCard strong,
+.modalHeader h2,
+.settingsHero strong,
+.infoList b,
+.moreSheetHeader {
+  color: var(--ink);
+}
+
+.sidebarBrand strong::after,
+.topbar p,
+.topbarActions > span,
+.sidebarStatus p,
+.sidebarStatus span,
+.panelHeader span,
+.statCard span,
+.listRow span,
+.tableRow span,
+.activityRow em,
+.metricList span,
+.metricList em,
+.settingsHero span,
+.formGrid label,
+.empty,
+.intelligenceCard span,
+.segmented button,
+.themeToggle button,
+.mobileTabBar button,
+.moreSheetLinks button {
+  color: var(--muted);
+}
+
+.eyebrow,
+.statCard p,
+.miniCard p,
+.kpiCard p,
+.kpiDark p,
+.intelligenceCard p,
+.sourceDuitbiz .eyebrow,
+.sourceDuitStock .eyebrow,
+.sourceSupplierDebt .eyebrow,
+.overdue,
+.statSubValue {
+  color: var(--gold-soft);
+}
+
+.statBreakdown span,
+.kpiBreakdown span,
+.kpiDark .kpiBreakdown span,
+.kpiInline,
+.kpiDark .kpiInline,
+.intelligenceCard span {
+  color: var(--muted);
+}
+
+.statBreakdown b,
+.kpiBreakdown b,
+.kpiDark .kpiBreakdown b,
+.kpiInline b,
+.kpiDark .kpiInline b {
+  color: var(--ink);
+}
+
+.logo,
+.activeNavItem,
+.mobileTabBar .activeMobileTab,
+.moreSheetLinks .activeMoreItem,
+.segmented .activeSegment,
+.themeToggle .activeThemeButton,
+.refreshButton,
+.dangerButton {
+  border-color: rgba(199, 90, 0, 0.42);
+  background: linear-gradient(145deg, #ffb15f, #ff8a1f);
+  color: var(--ink);
+  box-shadow: 0 0 20px rgba(255, 138, 31, 0.28);
+}
+
+.activeNavItem span,
+.mobileTabBar .activeMobileTab span,
+.moreSheetLinks .activeMoreItem span {
+  color: var(--ink);
+}
+
+.navItem {
+  color: var(--muted);
+}
+
+.navItem span {
+  color: var(--muted);
+}
+
+.navItem:hover,
+.iconButton:hover,
+.viewAllButton:hover,
+.lockButton:hover {
+  border-color: var(--line-strong);
+  background: rgba(255, 138, 31, 0.1);
+  color: var(--ink);
+  box-shadow: var(--shadow);
+}
+
+.viewAllButton,
+.lockButton,
+.actionGrid button {
+  border: 1px solid var(--line);
+  background: rgba(255, 250, 240, 0.86);
+  color: var(--ink);
+  box-shadow: 0 0 16px rgba(255, 138, 31, 0.12);
+}
+
+.refreshButton:hover,
+.dangerButton:hover {
+  border-color: rgba(199, 90, 0, 0.5);
+  background: linear-gradient(145deg, #ffc078, #ff942e);
+  box-shadow: 0 0 24px rgba(255, 138, 31, 0.34);
+}
+
+.datePickerInput,
+.iconButton,
+.segmented,
+.themeToggle,
+.formGrid input {
+  border-color: var(--line);
+  background: rgba(255, 250, 240, 0.92);
+  color: var(--ink);
+  color-scheme: light;
+  box-shadow: inset 0 0 14px rgba(255, 138, 31, 0.06);
+}
+
+.datePickerInput:focus,
+.formGrid input:focus {
+  border-color: var(--gold);
+  outline: 0;
+  box-shadow: 0 0 20px rgba(255, 138, 31, 0.2);
+}
+
+.highlightRow,
+.settingsHero strong,
+.toggleList label,
+.infoList span,
+.activityFeed {
+  border-color: var(--line);
+  background: rgba(255, 247, 234, 0.82);
+}
+
+.barRow div {
+  background: rgba(255, 138, 31, 0.14);
+}
+
+.barRow i {
+  background: linear-gradient(90deg, #c75a00, #ff8a1f);
+  box-shadow: 0 0 14px rgba(255, 138, 31, 0.24);
+}
+
+.badge {
+  background: rgba(255, 138, 31, 0.14);
+  color: var(--gold-soft);
+}
+
+.dangerBadge {
+  background: rgba(199, 90, 0, 0.12);
+  color: var(--gold-soft);
+}
+
+.activityRow span {
+  color: var(--gold-soft);
+}
+
+.activityRow span::before,
+.sourceDot {
+  background: var(--gold);
+  box-shadow: 0 0 12px rgba(255, 138, 31, 0.32);
+}
+
+.sourceDuitbiz,
+.sourceDuitStock,
+.sourceSupplierDebt {
+  border-left-color: var(--gold);
+}
+
+.toggleList input {
+  accent-color: var(--gold);
+}
+
+.dangerCard {
+  border-color: rgba(199, 90, 0, 0.24);
+  background:
+    radial-gradient(circle at 0% 0%, rgba(255, 138, 31, 0.08), transparent 30%),
+    var(--panel);
+}
+
+.dangerCard p {
+  color: var(--muted);
+}
+
+.modalBackdrop,
+.moreSheetBackdrop {
+  background: rgba(122, 90, 53, 0.22);
+}
+
+.modalHeader {
+  border-bottom-color: var(--line);
+}
+
+.skeleton {
+  background: rgba(255, 138, 31, 0.12);
+}
+
+.skeleton::after {
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.72), transparent);
+}
+
+.pinDots span {
+  border-color: var(--line);
+}
+
+.pinDots .pinDotFilled {
+  border-color: var(--gold);
+  background: var(--gold);
+  box-shadow: 0 0 12px rgba(255, 138, 31, 0.32);
+}
+
+.pinPad button {
+  border-color: var(--line);
+  background: rgba(255, 250, 240, 0.88);
+  color: var(--ink);
+  box-shadow: 0 0 14px rgba(255, 138, 31, 0.12);
+}
+
+@media (max-width: 780px) {
+  .mobileTabBar {
+    border-top-color: var(--line);
+    background: rgba(255, 250, 240, 0.9);
+    box-shadow: 0 -14px 34px rgba(199, 90, 0, 0.12);
+    backdrop-filter: blur(18px);
+  }
+
+  .moreSheet {
+    border-top-color: var(--line);
+    background: rgba(255, 250, 240, 0.96);
+    box-shadow: 0 -18px 44px rgba(199, 90, 0, 0.14);
+  }
+}
+
+/* Premium typography hierarchy */
+.page,
+.lockPage,
+.page button,
+.page input,
+.page select,
+.lockPage button,
+.lockPage input {
+  font-family: "Ubuntu", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.sidebarBrand strong,
+.lockBrand strong,
+.topbar h1,
+.panelHeader h2,
+.settingsHero h2,
+.settingsCard .panelHeader h2,
+.modalHeader h2,
+.kpiCard p,
+.intelligenceCard p,
+.statCard p,
+.miniCard p,
+.eyebrow,
+.sourceDuitbiz .eyebrow,
+.sourceDuitStock .eyebrow,
+.sourceSupplierDebt .eyebrow,
+.mobileTabBar span,
+.moreSheetHeader {
+  font-family: "Barlow Condensed", "Ubuntu", sans-serif;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.topbar h1,
+.settingsHero h2 {
+  letter-spacing: 0.6px;
+}
+
+.sidebarStatus strong,
+.statCard strong,
+.kpiCard strong,
+.intelligenceCard strong,
+.miniCard strong,
+.metricList strong,
+.listRow b,
+.tableRow b,
+.tableRow strong,
+.activityRow b,
+.barRow b,
+.kpiBreakdown b,
+.statBreakdown b,
+.kpiInline b,
+.badge,
+.dangerBadge,
+.infoList b,
+.settingsHero strong {
+  font-family: "Bebas Neue", "Barlow Condensed", sans-serif;
+  font-weight: 400;
+  letter-spacing: 0.5px;
+  line-height: 0.95;
+}
+
+.kpiCard strong,
+.statCard strong {
+  font-size: clamp(2rem, 3.2vw, 3.15rem);
+}
+
+.intelligenceCard strong,
+.miniCard strong {
+  font-size: clamp(1.65rem, 2.4vw, 2.35rem);
+}
+
+.metricList strong {
+  font-size: clamp(1.55rem, 2.4vw, 2.15rem);
+}
+
+.tableRow strong,
+.tableRow b,
+.barRow b,
+.activityRow b,
+.listRow b {
+  font-size: 1.08rem;
+}
+
+.kpiCard p,
+.intelligenceCard p,
+.statCard p,
+.miniCard p {
+  font-size: 0.86rem;
+  letter-spacing: 1px;
+}
+
+.panelHeader h2 {
+  font-size: clamp(1.32rem, 2vw, 1.8rem);
+}
+
+.topbar h1 {
+  font-size: clamp(2.1rem, 3.4vw, 3rem);
+}
+
+/* Compact dashboard card spacing */
+.summaryGrid,
+.healthGrid,
+.insightGrid,
+.dashboardGrid,
+.heartbeatGrid,
+.settingsGrid,
+.commandCenter,
+.viewStack {
+  gap: 12px;
+}
+
+.summaryGrid {
+  margin-bottom: 12px;
+}
+
+.statCard,
+.kpiCard,
+.intelligenceCard,
+.miniCard,
+.settingsCard,
+.panel,
+.metricList > div {
+  padding: 12px 14px;
+}
+
+.statCard {
+  min-height: 104px;
+}
+
+.kpiCard {
+  align-content: stretch;
+  gap: 7px;
+  min-height: 150px;
+  grid-auto-rows: min-content;
+}
+
+.intelligenceCard {
+  min-height: 112px;
+}
+
+.panel {
+  padding: 14px;
+}
+
+.panelHeader {
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.statCard p,
+.kpiCard p,
+.intelligenceCard p,
+.miniCard p {
+  margin-bottom: 7px;
+  font-size: 0.78rem;
+  line-height: 1;
+}
+
+.statCard strong,
+.kpiCard strong,
+.intelligenceCard strong,
+.miniCard strong,
+.metricList strong {
+  margin-bottom: 7px;
+  line-height: 0.9;
+}
+
+.kpiCard strong,
+.statCard strong {
+  font-size: clamp(1.82rem, 2.75vw, 2.7rem);
+}
+
+.intelligenceCard strong,
+.miniCard strong {
+  font-size: clamp(1.42rem, 2vw, 2rem);
+}
+
+.metricList strong {
+  font-size: clamp(1.32rem, 2vw, 1.9rem);
+}
+
+.kpiCard em,
+.intelligenceCard em {
+  align-self: end;
+  margin-top: 4px;
+  font-size: 0.78rem;
+  line-height: 1.15;
+}
+
+.statBreakdown,
+.kpiBreakdown {
+  display: grid;
+  gap: 5px;
+  margin-top: 4px;
+}
+
+.statBreakdown span,
+.kpiBreakdown span,
+.kpiInline {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 8px;
+  min-width: 0;
+  overflow: hidden;
+  font-size: 0.78rem;
+  line-height: 1.05;
+  white-space: nowrap;
+}
+
+.statBreakdown b,
+.kpiBreakdown b,
+.kpiInline b {
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+  font-size: clamp(0.98rem, 1.5vw, 1.18rem);
+  line-height: 0.95;
+  text-align: right;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.statSubValue {
+  margin-bottom: 5px;
+  font-size: 0.82rem;
+  line-height: 1.1;
+}
+
+.listRow,
+.tableRow,
+.barRow,
+.activityRow {
+  gap: 8px;
+  min-height: 42px;
+  padding: 8px 10px;
+}
+
+.tableRow strong,
+.tableRow b,
+.barRow b,
+.activityRow b,
+.listRow b {
+  font-size: 1rem;
+  line-height: 0.95;
+}
+
+.tableRow span,
+.listRow span,
+.activityRow span,
+.activityRow em,
+.metricList span,
+.metricList em {
+  font-size: 0.8rem;
+  line-height: 1.1;
+}
+
+.barRow span,
+.tableRow strong,
+.listRow strong,
+.activityRow strong {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.metricList {
+  gap: 9px;
+}
+
+.metricList > div {
+  min-height: 78px;
+}
+
+.chartPanel,
+.heartbeatChart {
+  min-height: 380px;
+}
+
+.statSkeleton {
+  height: 36px;
+  margin-bottom: 8px;
+}
+
+@media (max-width: 780px) {
+  .summaryGrid,
+  .healthGrid,
+  .heartbeatGrid,
+  .intelligenceStack,
+  .insightGrid,
+  .dashboardGrid,
+  .settingsGrid,
+  .commandCenter,
+  .viewStack {
+    gap: 10px;
+  }
+
+  .dashboardArea {
+    padding: 12px 12px calc(76px + env(safe-area-inset-bottom));
+  }
+
+  .topbar {
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+
+  .statCard,
+  .kpiCard,
+  .intelligenceCard,
+  .miniCard,
+  .settingsCard,
+  .panel,
+  .metricList > div {
+    padding: 11px 12px;
+  }
+
+  .statCard,
+  .kpiCard,
+  .intelligenceCard {
+    min-height: auto;
+  }
+
+  .kpiCard {
+    gap: 6px;
+  }
+
+  .kpiCard p,
+  .intelligenceCard p,
+  .statCard p,
+  .miniCard p {
+    margin-bottom: 5px;
+    font-size: 0.72rem;
+    line-height: 1;
+  }
+
+  .kpiCard strong,
+  .statCard strong {
+    margin-bottom: 5px;
+    font-size: clamp(1.62rem, 8vw, 2.05rem);
+    line-height: 0.9;
+  }
+
+  .intelligenceCard strong,
+  .miniCard strong,
+  .metricList strong {
+    font-size: clamp(1.3rem, 6vw, 1.72rem);
+  }
+
+  .kpiCard em,
+  .intelligenceCard em {
+    margin-top: 3px;
+    font-size: 0.72rem;
+    line-height: 1.12;
+  }
+
+  .statBreakdown,
+  .kpiBreakdown {
+    gap: 4px;
+    margin-top: 2px;
+  }
+
+  .statBreakdown span,
+  .kpiBreakdown span,
+  .kpiInline {
+    gap: 6px;
+    font-size: 0.72rem;
+    line-height: 1;
+  }
+
+  .statBreakdown b,
+  .kpiBreakdown b,
+  .kpiInline b {
+    font-size: clamp(0.9rem, 4.2vw, 1.05rem);
+  }
+
+  .listRow,
+  .tableRow,
+  .barRow,
+  .activityRow {
+    gap: 5px;
+    min-height: 38px;
+    padding: 7px 9px;
+  }
+
+  .tableRow b,
+  .barRow b,
+  .activityRow b {
+    text-align: right;
+  }
+
+  .chartPanel,
+  .heartbeatChart {
+    min-height: 330px;
+  }
+}
+
+/* Premium KPI corner actions */
+.kpiCard {
+  position: relative;
+}
+
+.kpiCard > p {
+  padding-right: 38px;
+}
+
+.cardActionIcon {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 2;
+  display: flex;
+  width: 28px;
+  height: 28px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 138, 31, 0.28);
+  border-radius: 12px;
+  background: rgba(255, 247, 234, 0.66);
+  color: #c75a00;
+  cursor: pointer;
+  box-shadow: 0 0 12px rgba(255, 138, 31, 0.18);
+  font: inherit;
+  opacity: 0.74;
+  padding: 0;
+  backdrop-filter: blur(10px);
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    opacity 180ms ease,
+    transform 180ms ease;
+}
+
+.cardActionSvg {
+  width: 15px;
+  height: 15px;
+  fill: currentColor;
+  opacity: 0.82;
+}
+
+.cardActionIcon:hover,
+.cardActionIcon:focus-visible {
+  border-color: rgba(255, 138, 31, 0.46);
+  outline: 0;
+  box-shadow:
+    0 0 16px rgba(255, 138, 31, 0.28),
+    0 8px 20px rgba(199, 90, 0, 0.12);
+  opacity: 0.96;
+  transform: translateY(-1px);
+}
+
+.cardActionIcon:hover .cardActionSvg,
+.cardActionIcon:focus-visible .cardActionSvg {
+  opacity: 1;
+}
+
+@media (max-width: 780px) {
+  .kpiCard > p {
+    padding-right: 34px;
+  }
+
+  .cardActionIcon {
+    top: 12px;
+    right: 12px;
+    width: 28px;
+    height: 28px;
+  }
+}
+
+/* Compact KPI cards after moving navigation into corner icons */
+.kpiCard {
+  min-height: 132px;
+  gap: 6px;
+  padding-bottom: 12px;
+}
+
+.kpiCard strong {
+  margin-bottom: 4px;
+}
+
+.kpiCard .kpiBreakdown,
+.kpiCard .kpiInline {
+  margin-top: 2px;
+}
+
+.kpiCard em {
+  margin-top: 2px;
+}
+
+@media (max-width: 780px) {
+  .kpiCard {
+    gap: 5px;
+    min-height: auto;
+    padding-bottom: 10px;
+  }
+
+  .kpiCard strong {
+    margin-bottom: 3px;
+  }
+}
